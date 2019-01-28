@@ -8,7 +8,7 @@ import {DocumentCount} from './documentcount.js'
 import {WorldMap} from './worldmap'
 import {LanguageCount} from './languagecount.js'
 
-const NUMBER_BINS = 10
+const NUMBER_LENGTH_BINS = 10
 
 export class ViewCoordinator {
   constructor (vue, searchState) {
@@ -33,86 +33,55 @@ export class ViewCoordinator {
     t.documents.forEach(function (d) {
       d.date = parseDate(d.date)
       d.id = +d.id
-      if (!('location' in d)) {
-        d.location = [181.0, 91.0]
-      }
     })
-    t.setTopicData()
     // Event handling
     t.dispatch = d3.dispatch('dateStart', 'dateEnd', 'dateClear',
       'lengthStart', 'lengthEnd', 'lengthClear',
       'mapStart', 'mapEnd', 'languageSelection',
       'languageClear')
     t.crossFilter = crossfilter(t.documents)
-    t.createDimensions()
-    t.createGroups()
+    t.createDimensionsGroups()
     t.createViews()
-    t.setupColors()
     t.prepareVisualization()
     t.updateVisualization()
     t.setupDispatch()
-    t.setupLinkDispatch()
   }
 
-  createDimensions () {
+  createDimensionsGroups () {
     let t = this
+    // Date dimension
     t.dateDimension = t.crossFilter.dimension(function (d) {
       return d.date
     })
-    t.dateDimensionCount = t.crossFilter.dimension(function (d) {
-      return d.date
-    })
-    t.lengthDimension = t.crossFilter.dimension(function (d) {
-      return d.textLength
-    })
-    t.longitudeDimension = t.crossFilter.dimension(function (d) {
-      return d.location[0]
-    })
-    t.latitudeDimension = t.crossFilter.dimension(function (d) {
-      return d.location[1]
-    })
-    t.languageDimension = t.crossFilter.dimension(function (d) {
-      return d.language[0]
-    })
-  }
-
-  createGroups () {
-    let t = this
-    // Define group and reduction functions
     let dateGroup = function (d) {
       return new Date('' + d.getFullYear())
     }
+    t.dateCountGroup = t.dateDimension.group(dateGroup)
+    // Length dimension
+    t.lengthDimension = t.crossFilter.dimension(function (d) {
+      return d.textLength
+    })
     t.textLengthMin = t.lengthDimension.bottom(1)[0].textLength
     t.textLengthRange = t.lengthDimension.top(1)[0].textLength - t.textLengthMin
     let lengthBins = function (d) {
       return Math.floor(((d - t.textLengthMin) / t.textLengthRange) *
-        NUMBER_BINS)
+        NUMBER_LENGTH_BINS)
     }
-    t.groupAll = t.crossFilter.groupAll()
-    // Length of texts in bins
     t.lengthDimensionGroup = t.lengthDimension.group(lengthBins).reduceCount()
-    // Number of documents in groups per year
-    t.documentCountGroup = t.dateDimension.group(dateGroup)
-    t.documentCountGroup = t.documentCountGroup.reduceCount()
-    t.dateCountGroup = t.dateDimensionCount.group(dateGroup)
+    // Latitude and longitude dimensions
+    t.longitudeDimension = t.crossFilter.dimension(function (d) {
+      return d.longitude
+    })
+    t.latitudeDimension = t.crossFilter.dimension(function (d) {
+      return d.latitude
+    })
+    t.locationDimension = t.crossFilter.dimension(function (d) {
+      return d.id
+    })
+    t.languageDimension = t.crossFilter.dimension(function (d) {
+      return d.language
+    }, true)
     t.languageGroup = t.languageDimension.group()
-  }
-
-  setTopicData () {
-    let t = this
-    t.topicTerms = t.basicInformation.topicTerms
-    t.fullTopicText = {}
-    t.shortTopicText = {}
-    for (let i = 0; i < t.topicTerms.length; ++i) {
-      let topicTerm = t.topicTerms[i]
-      t.fullTopicText[topicTerm.topic] = topicTerm.topicTerms.join(' ')
-      t.shortTopicText[topicTerm.topic] = topicTerm.topicTerms
-        .slice(0, 3).join(' ')
-    }
-  }
-
-  getFullTopicText (topic) {
-    return this.fullTopicText[topic]
   }
 
   /**
@@ -126,7 +95,7 @@ export class ViewCoordinator {
     let bins = t.lengthDimensionGroup.top(Infinity)
     for (let i in bins) {
       let bin = bins[i]
-      bin.scaledKey = t.textLengthMin + bin.key / NUMBER_BINS *
+      bin.scaledKey = t.textLengthMin + bin.key / NUMBER_LENGTH_BINS *
         t.textLengthRange
     }
     return bins
@@ -148,25 +117,20 @@ export class ViewCoordinator {
     t.languageCount = new LanguageCount('language-count', this, 100)
   }
 
-  setupColors () {
-    let t = this
-    t.topicColor = d3.scaleOrdinal(d3.schemeCategory10)
-  }
-
   setupDispatch () {
     let t = this
     t.dispatch.on('dateStart', function () {
       t.searchState.clearDateRange()
-      t.dateDimensionCount.filterAll()
+      t.dateDimension.filterAll()
     })
     t.dispatch.on('dateEnd', function (range) {
       t.searchState.setDateRange(range)
-      t.dateDimensionCount.filterRange(range)
+      t.dateDimension.filterRange(range)
       t.updateVisualization()
     })
     t.dispatch.on('dateClear', function () {
       t.searchState.clearDateRange()
-      t.dateDimensionCount.filterAll()
+      t.dateDimension.filterAll()
       t.updateVisualization()
     })
     t.dispatch.on('lengthStart', function () {
@@ -183,14 +147,11 @@ export class ViewCoordinator {
       t.lengthDimension.filterAll()
       t.updateVisualization()
     })
-    t.dispatch.on('topicTerms', function (topic) {
-      t.vue.topicMoreLikeThisEvent(t.getFullTopicText(topic))
-    })
     t.dispatch.on('mapEnd', function (ranges) {
-      t.longitudeDimension.filterRange(ranges.longitudeRange)
       t.latitudeDimension.filterRange(ranges.latitudeRange)
-      t.searchState.setLongitudeRange(ranges.longitudeRange)
+      t.longitudeDimension.filterRange(ranges.longitudeRange)
       t.searchState.setLatitudeRange(ranges.latitudeRange)
+      t.searchState.setLongitudeRange(ranges.longitudeRange)
       t.updateVisualization()
     })
     t.dispatch.on('mapStart', function () {
@@ -212,15 +173,11 @@ export class ViewCoordinator {
 
   updateVisualization () {
     let t = this
-    let textLengthData = t.textLengthData()
-    t.textLength.update(textLengthData)
-    let reducedCount = t.topicDistributionCount()
-    t.documentCount.update(reducedCount)
-    // TODO Location is split into two dimensions, which makes it hard to filter
-    // on the location as a whole.
-    t.worldMap.update(t.latitudeDimension.top(Infinity))
+    t.documentCount.update(t.dateCountGroup.all())
+    t.textLength.update(t.textLengthData())
+    t.worldMap.update(t.locationDimension.top(Infinity))
     t.languageCount.update(t.languageGroup.reduceCount().top(Infinity))
-    t.vue.updateSelected(t.countFiltered())
+    t.vue.updateSelected(t.locationDimension.top(Infinity).length)
     t.vue.filterEvent()
   }
 

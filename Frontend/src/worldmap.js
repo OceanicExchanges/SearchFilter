@@ -13,7 +13,9 @@ export class WorldMap extends View {
     let path = d3.geoPath().projection(t.projection)
     t.color = d3.scaleLinear()
       .range(['blue', 'red'])
-    t.keyFunction = function (d) { return d.id }
+    t.keyFunction = function (d) {
+      return d.id
+    }
 
     function brushStart () {
       t.dispatch.call('mapStart')
@@ -51,16 +53,28 @@ export class WorldMap extends View {
   update (data) {
     let t = this
     if (t.prepared) {
-      t.color.domain(d3.extent(data, function (d) { return d.date }))
+      t.color.domain(d3.extent(data, function (d) {
+        return d.date
+      }))
       let updateSelection = t.svgFull.selectAll('circle')
-        .data(data.filter(function (d) { return d.location[0] < 180.0 }), t.keyFunction)
+        .data(data.filter(function (d) {
+          return 'latitude' in d && 'longitude' in d
+        }), t.keyFunction)
       updateSelection.exit().remove()
       updateSelection.enter()
         .append('circle')
-        .attr('cx', function (d) { return t.projection(d.location)[0] })
-        .attr('cy', function (d) { return t.projection(d.location)[1] })
-        .attr('r', function (d) { return d.hasOwnProperty('radius') ? d.radius : 2 })
-        .attr('fill', function (d) { return t.color(d.date) })
+        .attr('cx', function (d) {
+          return t.projection([d.longitude, d.latitude])[0]
+        })
+        .attr('cy', function (d) {
+          return t.projection([d.longitude, d.latitude])[1]
+        })
+        .attr('r', function (d) {
+          return d.hasOwnProperty('radius') ? d.radius : 2
+        })
+        .attr('fill', function (d) {
+          return t.color(d.date)
+        })
     } else {
       t.data = data
     }
