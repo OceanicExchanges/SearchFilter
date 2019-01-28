@@ -4,6 +4,7 @@ import access.IndexWriteSingleton;
 import access.Location;
 import access.LocationSingleton;
 import de.uni_stuttgart.corpusexplorer.common.configuration.C;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
@@ -127,6 +128,7 @@ public abstract class DocumentCreator implements Runnable {
    * @param textDocument JSON that contains the text data
    */
   final void addText(String text, JSONObject textDocument) {
+    text = cleanText(text);
     textField.setStringValue(text);
     textDocument.put(C.JSONFieldNames.TEXT, text);
   }
@@ -159,7 +161,7 @@ public abstract class DocumentCreator implements Runnable {
    * @param visualization JSON that contains the visualization data
    */
   final void addCoordinates(double latitude, double longitude,
-                           JSONObject visualization) {
+                            JSONObject visualization) {
     visualization.put(C.JSONFieldNames.LATITUDE, latitude);
     visualization.put(C.JSONFieldNames.LONGITUDE, longitude);
     latitudeField.setDoubleValue(latitude);
@@ -179,11 +181,12 @@ public abstract class DocumentCreator implements Runnable {
 
   /**
    * Return the latitude of the given place of publication
+   *
    * @param placeOfPublication
    * @return latitude
    */
   final double getLatitude(String placeOfPublication) {
-    if(locations.containsKey(placeOfPublication)) {
+    if (locations.containsKey(placeOfPublication)) {
       return locations.get(placeOfPublication).latitude;
     }
     return -1.0;
@@ -191,11 +194,12 @@ public abstract class DocumentCreator implements Runnable {
 
   /**
    * Return the longitude of the given place of publication
+   *
    * @param placeOfPublication
    * @return longitude
    */
   final double getLongitude(String placeOfPublication) {
-    if(locations.containsKey(placeOfPublication)) {
+    if (locations.containsKey(placeOfPublication)) {
       return locations.get(placeOfPublication).longitude;
     }
     return -1.0;
@@ -218,12 +222,13 @@ public abstract class DocumentCreator implements Runnable {
 
   /**
    * Return an array of normalized language identifiers
+   *
    * @param languages
    * @return
    */
   final String[] normalizeLanguages(String languages) {
     String[] languagesArray = languages.split(",");
-    for(int i = 0; i < languagesArray.length; ++i) {
+    for (int i = 0; i < languagesArray.length; ++i) {
       switch (languagesArray[i]) {
         case "German":
           languagesArray[i] = "de";
@@ -235,4 +240,20 @@ public abstract class DocumentCreator implements Runnable {
     }
     return languagesArray;
   }
+
+  /**
+   * Replace a number of substrings in the text to make it more readable
+   *
+   * @param text
+   * @return cleaned text
+   */
+  final String cleanText(String text) {
+    final String[] searchStrings = {"&nbsp;", "nbsp;", "&nbsp", "nbsp"};
+    final String[] replacements = {" ", " ", " ", " "};
+    for (int i = 0; i < searchStrings.length; ++i) {
+      text = StringUtils.replace(text, searchStrings[i], replacements[i]);
+    }
+    return text;
+  }
 }
+
