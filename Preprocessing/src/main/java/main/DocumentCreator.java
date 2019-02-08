@@ -4,7 +4,6 @@ import access.IndexWriteSingleton;
 import access.Location;
 import access.LocationSingleton;
 import de.uni_stuttgart.corpusexplorer.common.configuration.C;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
@@ -128,7 +127,7 @@ public abstract class DocumentCreator implements Runnable {
    * @param textDocument JSON that contains the text data
    */
   final void addText(String text, JSONObject textDocument) {
-    text = cleanText(text);
+    text = OCR.cleanText(text);
     textField.setStringValue(text);
     textDocument.put(C.JSONFieldNames.TEXT, text);
   }
@@ -240,20 +239,4 @@ public abstract class DocumentCreator implements Runnable {
     }
     return languagesArray;
   }
-
-  /**
-   * Replace a number of substrings in the text to make it more readable
-   *
-   * @param text
-   * @return cleaned text
-   */
-  final String cleanText(String text) {
-    final String[] searchStrings = {"&nbsp;", "nbsp;", "&nbsp", "nbsp"};
-    final String[] replacements = {" ", " ", " ", " "};
-    for (int i = 0; i < searchStrings.length; ++i) {
-      text = StringUtils.replace(text, searchStrings[i], replacements[i]);
-    }
-    return text;
-  }
 }
-
