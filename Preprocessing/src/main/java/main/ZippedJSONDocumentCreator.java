@@ -4,6 +4,7 @@ import de.uni_stuttgart.corpusexplorer.common.configuration.C;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 
 public class ZippedJSONDocumentCreator extends DocumentCreator {
@@ -34,6 +35,7 @@ public class ZippedJSONDocumentCreator extends DocumentCreator {
     } catch (IOException exception) {
       exception.printStackTrace();
     }
+    logger.log(Level.INFO, "Finished file: " + file.toString());
   }
 
   private void addDocument(JSONObject document) {

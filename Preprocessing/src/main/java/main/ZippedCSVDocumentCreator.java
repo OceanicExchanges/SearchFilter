@@ -6,6 +6,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 
 public class ZippedCSVDocumentCreator extends DocumentCreator {
@@ -42,6 +43,7 @@ public class ZippedCSVDocumentCreator extends DocumentCreator {
     } catch (IOException exception) {
       // Nothing bad happens, if we are unable to close the file
     }
+    logger.log(Level.INFO, "Finished file: " + file.toString());
   }
 
   private void addDocument(CSVRecord record) {

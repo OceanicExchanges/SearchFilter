@@ -80,15 +80,6 @@ public class C {
       return C.getS(PROJECT) + C.getS(DOCUMENT);
     }
 
-    private static final String TOPIC_TERMS_FILE = "file.path.topic.terms.file";
-
-    /**
-     * @return path to the topic terms file
-     */
-    public static String topicTermsFile() {
-      return C.getS(PROJECT) + C.getS(TOPIC_TERMS_FILE);
-    }
-
     private static final String LOCATIONS = "file.locations";
 
     /**

@@ -4,7 +4,6 @@ import access.IndexReaderSingleton;
 import access.IndexSearcherSingleton;
 import com.google.common.base.Stopwatch;
 import de.mo42.JSONStringBuilder;
-import de.uni_stuttgart.corpusexplorer.common.access.TopicTermsAccess;
 import de.uni_stuttgart.corpusexplorer.common.configuration.C;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;

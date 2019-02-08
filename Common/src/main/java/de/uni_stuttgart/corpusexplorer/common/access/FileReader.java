@@ -13,9 +13,7 @@ class FileReader {
    * string.
    *
    * @param path to the file
-   *
    * @return contents as a string
-   *
    * @throws IOException in case reading failed
    */
   static String readFile(String path) throws IOException {

@@ -23,10 +23,10 @@ public abstract class DocumentCreator implements Runnable {
   final Document document;
 
   File file;
-  IndexWriter indexWriter;
+  private IndexWriter indexWriter;
   Map<String, Location> locations;
-  FieldType textFieldType;
-  FieldType languageFieldType;
+  private FieldType textFieldType;
+  private FieldType languageFieldType;
 
   // Index fields
   final LongPoint idField;

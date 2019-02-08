@@ -3,7 +3,6 @@ package servlets;
 import de.uni_stuttgart.corpusexplorer.common.configuration.C;
 import searcher.Searcher;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +20,8 @@ public abstract class MainServlet extends HttpServlet {
   }
 
   private void prepareResponse(HttpServletRequest request,
-      HttpServletResponse response) throws IOException {
+                               HttpServletResponse response)
+    throws IOException {
     writer = response.getWriter();
     queryParameterMap = request.getParameterMap();
   }
@@ -38,19 +38,19 @@ public abstract class MainServlet extends HttpServlet {
   }
 
   void respond(HttpServletRequest request, HttpServletResponse response,
-      Searcher analyzer) throws IOException {
+               Searcher analyzer) throws IOException {
     prepareResponse(request, response);
     String result = computeResponse(analyzer);
     finishResponse(response, result);
   }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+    throws IOException {
     response.getWriter().append("Served at: ").append(request.getContextPath());
   }
 
   protected void doPost(HttpServletRequest request,
-      HttpServletResponse response) throws ServletException, IOException {
+                        HttpServletResponse response) throws IOException {
     doGet(request, response);
   }
 }

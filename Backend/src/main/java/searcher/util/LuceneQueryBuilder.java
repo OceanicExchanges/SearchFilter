@@ -22,6 +22,7 @@ public class LuceneQueryBuilder {
   private static final String TIME = "time";
   private static final String LONGITUDE = "longitude";
   private static final String LATITUDE = "latitude";
+
   /**
    * Map that contains all the query fields
    */
@@ -101,10 +102,11 @@ public class LuceneQueryBuilder {
   }
 
   /**
-   * Build a boolean clause for a given integer range.
+   * Create a boolean clause for a given integer range.
    *
-   * @param range lower and upper bound
-   * @return query representing an integer range
+   * @param fieldName on which the range is applied
+   * @param range     array of length two: [lower, upper]
+   * @return Int range query
    */
   private Query getIntRange(final String fieldName, String[] range) {
     int lower = Integer.parseInt(range[0]);
@@ -113,16 +115,25 @@ public class LuceneQueryBuilder {
   }
 
   /**
-   * Build a boolean clause for a given string range.
+   * Create a boolean clause for a given string range.
    *
-   * @param range lower and upper bound
-   * @return query representing a string range
+   * @param fieldName on which the range is applied
+   * @param range     array of length two: [lower, upper]
+   * @return String range query
    */
   private Query getStringRange(final String fieldName, String[] range) {
     return TermRangeQuery
       .newStringRange(fieldName, range[0], range[1], true, true);
   }
 
+
+  /**
+   * Create a Boolean clause for a given double range.
+   *
+   * @param fieldName on which the range is applied
+   * @param range     array of length two: [lower, upper]
+   * @return Double range query
+   */
   private Query getDoubleRange(final String fieldName, String[] range) {
     double lower = Double.parseDouble(range[0]);
     double upper = Double.parseDouble(range[1]);
