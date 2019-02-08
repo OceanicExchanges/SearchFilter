@@ -1,7 +1,7 @@
 'use strict'
 
 import * as d3 from 'd3'
-import * as crossfilter from 'crossfilter2'
+import * as cf from 'crossfilter2'
 
 import {TextLength} from './textlength.js'
 import {DocumentCount} from './documentcount.js'
@@ -39,7 +39,7 @@ export class ViewCoordinator {
       'lengthStart', 'lengthEnd', 'lengthClear',
       'mapStart', 'mapEnd', 'languageSelection',
       'languageClear')
-    t.crossFilter = crossfilter(t.documents)
+    t.cf = cf(t.documents)
     t.createDimensionsGroups()
     t.createViews()
     t.prepareVisualization()
@@ -50,7 +50,7 @@ export class ViewCoordinator {
   createDimensionsGroups () {
     let t = this
     // Date dimension
-    t.dateDimension = t.crossFilter.dimension(function (d) {
+    t.dateDimension = t.cf.dimension(function (d) {
       return d.date
     })
     let dateGroup = function (d) {
@@ -58,7 +58,7 @@ export class ViewCoordinator {
     }
     t.dateCountGroup = t.dateDimension.group(dateGroup)
     // Length dimension
-    t.lengthDimension = t.crossFilter.dimension(function (d) {
+    t.lengthDimension = t.cf.dimension(function (d) {
       return d.textLength
     })
     t.textLengthMin = t.lengthDimension.bottom(1)[0].textLength
@@ -69,16 +69,16 @@ export class ViewCoordinator {
     }
     t.lengthDimensionGroup = t.lengthDimension.group(lengthBins).reduceCount()
     // Latitude and longitude dimensions
-    t.longitudeDimension = t.crossFilter.dimension(function (d) {
+    t.longitudeDimension = t.cf.dimension(function (d) {
       return d.longitude
     })
-    t.latitudeDimension = t.crossFilter.dimension(function (d) {
+    t.latitudeDimension = t.cf.dimension(function (d) {
       return d.latitude
     })
-    t.locationDimension = t.crossFilter.dimension(function (d) {
+    t.locationDimension = t.cf.dimension(function (d) {
       return d.id
     })
-    t.languageDimension = t.crossFilter.dimension(function (d) {
+    t.languageDimension = t.cf.dimension(function (d) {
       return d.language
     }, true)
     t.languageGroup = t.languageDimension.group()
