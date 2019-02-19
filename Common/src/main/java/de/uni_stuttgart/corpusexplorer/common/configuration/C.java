@@ -49,6 +49,13 @@ public class C {
     public static int numberDocuments() {
       return C.getI(NUMBER_DOCUMENTS);
     }
+
+    private static String MAX_EDIT_DISTANCE = "serve.maxEditDistance";
+
+    /**
+     * @return the maximum number of character edits of a query term
+     */
+    public static int maxEditDistance() { return C.getI(MAX_EDIT_DISTANCE); }
   }
 
   public static class FilePath {

@@ -28,8 +28,11 @@ public class LuceneQueryBuilder {
    */
   private final Map<String, String[]> queryMap;
 
+  private final int maxEditDistance;
+
   public LuceneQueryBuilder(Map<String, String[]> queryMap) {
     this.queryMap = queryMap;
+    this.maxEditDistance = C.Serve.maxEditDistance();
   }
 
   /**
@@ -41,13 +44,15 @@ public class LuceneQueryBuilder {
    * @return list of {@link org.apache.lucene.search.BooleanClause}
    */
   private static List<BooleanClause> getTextClauses(String[] terms,
-                                                    BooleanClause.Occur occur) {
+                                                    BooleanClause.Occur occur,
+                                                    int maxEditDistance) {
     List<BooleanClause> booleanClauseList = new ArrayList<>();
     for (String primaryTerm : terms) {
       primaryTerm = primaryTerm.toLowerCase();
-      TermQuery termQuery =
-        new TermQuery(new Term(C.FieldNames.TEXT, primaryTerm));
-      BooleanClause booleanClause = new BooleanClause(termQuery, occur);
+      FuzzyQuery fuzzyQuery =
+        new FuzzyQuery(new Term(C.FieldNames.TEXT, primaryTerm),
+          maxEditDistance);
+      BooleanClause booleanClause = new BooleanClause(fuzzyQuery, occur);
       booleanClauseList.add(booleanClause);
     }
     return booleanClauseList;
@@ -63,19 +68,21 @@ public class LuceneQueryBuilder {
     if (queryMap.containsKey(PRIMARY)) {
       String[] primary = queryMap.get(PRIMARY)[0].split(",");
       List<BooleanClause> clauses =
-        getTextClauses(primary, BooleanClause.Occur.MUST);
+        getTextClauses(primary, BooleanClause.Occur.MUST, this.maxEditDistance);
       clauses.forEach(booleanQueryBuilder::add);
     }
     if (queryMap.containsKey(SELECTIONS)) {
       String[] selections = queryMap.get(SELECTIONS)[0].split(",");
       List<BooleanClause> clauses =
-        getTextClauses(selections, BooleanClause.Occur.SHOULD);
+        getTextClauses(selections, BooleanClause.Occur.SHOULD,
+          this.maxEditDistance);
       clauses.forEach(booleanQueryBuilder::add);
     }
     if (queryMap.containsKey(EXCLUSIONS)) {
       String[] exclusions = queryMap.get(EXCLUSIONS)[0].split(",");
       List<BooleanClause> clauses =
-        getTextClauses(exclusions, BooleanClause.Occur.MUST_NOT);
+        getTextClauses(exclusions, BooleanClause.Occur.MUST_NOT,
+          this.maxEditDistance);
       clauses.forEach(booleanQueryBuilder::add);
     }
     if (queryMap.containsKey(LENGTH)) {
