@@ -27,9 +27,7 @@ public class IndexSearcherSingleton {
    */
   public static IndexSearcher getInstance() throws IOException {
     if (indexSearcher == null) {
-      FSDirectory directory = FSDirectory.open(Paths.get(C.FilePath.index()));
-      DirectoryReader directoryReader = DirectoryReader.open(directory);
-      indexSearcher = new IndexSearcher(directoryReader);
+      indexSearcher = new IndexSearcher(IndexReaderSingleton.getInstance());
     }
     return indexSearcher;
   }
