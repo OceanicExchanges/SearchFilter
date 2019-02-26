@@ -4,8 +4,11 @@ import de.uni_stuttgart.corpusexplorer.common.configuration.C;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.NIOFSDirectory;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -25,7 +28,7 @@ public class IndexReaderSingleton {
    */
   public static IndexReader getInstance() throws IOException {
     if (indexReader == null) {
-      FSDirectory directory = FSDirectory.open(Paths.get(C.FilePath.index()));
+      FSDirectory directory = NIOFSDirectory.open(Paths.get(C.FilePath.index()));
       indexReader = DirectoryReader.open(directory);
     }
     return indexReader;
