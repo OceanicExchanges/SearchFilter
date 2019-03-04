@@ -4,10 +4,8 @@ import access.IndexSearcherSingleton;
 import de.mo42.JSONStringBuilder;
 import de.uni_stuttgart.corpusexplorer.common.configuration.C;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.index.TermContext;
+import org.apache.lucene.search.*;
 
 import java.io.IOException;
 import java.util.Map;

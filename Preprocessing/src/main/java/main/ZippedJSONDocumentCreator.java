@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 
 public class ZippedJSONDocumentCreator extends DocumentCreator {
-  public ZippedJSONDocumentCreator(File file) throws IOException {
+  ZippedJSONDocumentCreator(File file) throws IOException {
     super(file);
   }
 

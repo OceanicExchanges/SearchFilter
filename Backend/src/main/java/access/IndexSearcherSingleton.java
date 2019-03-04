@@ -1,12 +1,8 @@
 package access;
 
-import de.uni_stuttgart.corpusexplorer.common.configuration.C;
-import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 
 /**
  * This class represents a single instance of a Lucene {@link IndexSearcher}.
@@ -22,7 +18,6 @@ public class IndexSearcherSingleton {
    * IndexSearcher}.
    *
    * @return {@link IndexSearcher}
-   *
    * @throws IOException in case opening the index failed
    */
   public static IndexSearcher getInstance() throws IOException {

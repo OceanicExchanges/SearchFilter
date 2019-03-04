@@ -48,8 +48,8 @@ public class DocumentMoreLikeThisSearcher extends Searcher {
       return handleException(exception);
     }
     MoreLikeThis moreLikeThis = new MoreLikeThis(indexReader);
-    moreLikeThis.setFieldNames(
-      new String[]{C.FieldNames.TITLE, C.FieldNames.TEXT});
+    moreLikeThis
+      .setFieldNames(new String[]{C.FieldNames.TITLE, C.FieldNames.TEXT});
     moreLikeThis.setAnalyzer(new StandardAnalyzer());
     Query moreLikeThisQuery;
     try {
