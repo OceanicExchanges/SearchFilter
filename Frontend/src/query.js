@@ -12,8 +12,8 @@ import {_} from 'utiljs'
  */
 export function query (relativeUrl, callback) {
   let url = relativeUrl
-  console.log(relativeUrl)
   if (process.env.NODE_ENV === 'development') {
+    console.log(relativeUrl)
     if (relativeUrl.startsWith('query')) {
       url = 'http://localhost:8080/static/query.json'
     } else if (relativeUrl.startsWith('like')) {

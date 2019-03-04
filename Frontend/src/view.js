@@ -20,8 +20,8 @@ export class View {
     t.dispatch = viewCoordinator.dispatch
     t.viewCoordinator = viewCoordinator
     t.margin = 40
-    t.width = 400
-    t.height = height || 400
+    t.width = 600
+    t.height = height || 600
     t.initSVG(containerID)
     t.transition = 0
     t.defaultGray = '#666666'

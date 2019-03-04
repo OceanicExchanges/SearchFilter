@@ -6,19 +6,13 @@
     </div>
     <info-line v-bind="infoLineData" @tagEvent="tagEvent"/>
     <div class="grid">
-      <div class="grid61">
-        <div class="grid">
-          <div class="grid50">
-            <div id="documentCount"></div>
-            <div id="language-count"></div>
-          </div>
-          <div class="grid50">
-            <div id="textLength"></div>
-            <div id="geo-map"></div>
-          </div>
-        </div>
+      <div class="grid50">
+        <div id="geo-map"></div>
+        <div id="documentCount"></div>
+        <div id="textLength"></div>
+        <div id="language-count"></div>
       </div>
-      <div class="grid39" v-if="items.length > 0">
+      <div class="grid50" v-if="items.length > 0">
         <list v-bind:items="items"
               v-bind:terms="terms"
               @moreLikeThisEvent="moreLikeThisEvent"
@@ -26,7 +20,6 @@
               @pageEvent="pageEvent"/>
       </div>
     </div>
-    <div id="tooltip"></div>
   </div>
 </template>
 
@@ -175,28 +168,7 @@ export default {
     display: flex;
   }
 
-  .grid61 {
-    flex-basis: 61%;
-  }
-
-  .grid39 {
-    flex-basis: 39%;
-  }
-
   .grid50 {
     flex-basis: 49%;
-  }
-
-  div#tooltip {
-    position: absolute;
-    text-align: center;
-    padding: 2px;
-    font: 12px sans-serif;
-    width: 100px;
-    background: lightgrey;
-    border-radius: 2px;
-    border: 1px solid black;
-    pointer-events: none;
-    opacity: 0;
   }
 </style>
