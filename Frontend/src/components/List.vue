@@ -5,6 +5,7 @@
         <list-item
             v-bind:item="item"
             v-bind:terms="terms"
+            v-bind:link="item.link"
             @moreLikeThisEvent="moreLikeThisEvent"
             @selectionEvent="selectionEvent"/>
       </li>

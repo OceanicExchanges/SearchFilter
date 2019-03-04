@@ -4,7 +4,8 @@
          src="../assets/clear.svg"/>
     <img title="Search for similar documents" v-on:click="moreLikeThis"
          width="16px" src="../assets/similardocuments.svg"/>
-    <img title="Open document source" v-on:click="sourceLink" width="16px"
+    <img v-if="link" title="Open document source"
+         v-on:click="sourceLink" width="16px"
          src="../assets/source.svg"/>
     {{ item.date }} {{ item.publisher }}
     <div ref="text"/>
@@ -15,7 +16,7 @@ import {TextMark} from './../textmark.js'
 
 export default {
   name: 'ListItem',
-  props: ['index', 'item', 'terms'],
+  props: ['index', 'item', 'terms', 'link'],
   watch: {
     terms: function () {
       this.markTerms(this.terms)
