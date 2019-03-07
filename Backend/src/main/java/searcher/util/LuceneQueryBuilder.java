@@ -30,6 +30,8 @@ public class LuceneQueryBuilder {
 
   private final int maxEditDistance;
 
+  private static final int PREFIX_LENGTH = 5;
+
   public LuceneQueryBuilder(Map<String, String[]> queryMap) {
     this.queryMap = queryMap;
     this.maxEditDistance = C.Serve.maxEditDistance();
@@ -51,7 +53,7 @@ public class LuceneQueryBuilder {
       primaryTerm = primaryTerm.toLowerCase();
       FuzzyQuery fuzzyQuery =
         new FuzzyQuery(new Term(C.FieldNames.TEXT, primaryTerm),
-          maxEditDistance);
+          maxEditDistance, PREFIX_LENGTH);
       BooleanClause booleanClause = new BooleanClause(fuzzyQuery, occur);
       booleanClauseList.add(booleanClause);
     }
