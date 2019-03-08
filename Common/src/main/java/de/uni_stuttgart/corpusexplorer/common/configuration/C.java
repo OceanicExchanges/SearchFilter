@@ -95,6 +95,16 @@ public class C {
     public static String locationsFile() {
       return C.getS(PROJECT) + C.getS(LOCATIONS);
     }
+
+    private static final String DICTIONARY = "file.path.dictionary";
+
+    /**
+     * @param language of the dictionary
+     * @return path to dictionary for a given language
+     */
+    public static String dictionary(String language) {
+      return C.getS(PROJECT) + C.getS(DICTIONARY) + "/" + language + ".txt";
+    }
   }
 
   public static class Process {

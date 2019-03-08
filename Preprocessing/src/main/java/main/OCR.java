@@ -2,6 +2,9 @@ package main;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * This class provides rule-based OCR error correction.
+ */
 class OCR {
 
   private static final String[] DELETE_STRINGS =
@@ -9,7 +12,8 @@ class OCR {
   private static final String SPACE = " ";
 
   /**
-   * @param text Replace a number of substrings in the text to make it more readable
+   * @param text Replace a number of substrings in the text to make it more
+   *             readable
    * @return cleaned text
    */
   static String cleanText(String text) {
