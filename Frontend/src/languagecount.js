@@ -6,10 +6,17 @@ import * as d3 from 'd3'
 export class LanguageCount extends View {
   prepare () {
     let t = this
-    t.x = d3.scaleBand().range([0, t.width])
+    t.x = d3.scaleBand().range([0, t.width]).padding(0.2)
     t.xAxis = d3.axisBottom().scale(t.x)
     t.y = d3.scaleLog().range([t.height, 0])
     t.yAxis = d3.axisLeft().scale(t.y)
+    t.colorList = ['#50b1dd',
+      '#f19233',
+      '#A07A19',
+      '#AC30C0',
+      '#EB9A72',
+      '#EA22A8']
+    t.color = d3.scaleOrdinal().range(t.colorList)
     t.mainShape = 'rect'
     t.mainClass = 'bar'
     t.dotMainClass = '.bar'
@@ -42,7 +49,7 @@ export class LanguageCount extends View {
     updateSelection.enter()
       .append(t.mainShape)
       .attr('class', t.mainClass)
-      .attr('fill', '#666666')
+      .attr('fill', function (d, i) { return t.color(i % t.colorList.length)})
       .attr('x', function (d) {
         return t.x(d.key)
       })

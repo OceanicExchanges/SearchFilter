@@ -113,7 +113,7 @@ export class ViewCoordinator {
     let t = this
     t.documentCount = new DocumentCount('documentCount', this, 100)
     t.textLength = new TextLength('textLength', this, 100)
-    t.worldMap = new WorldMap('geo-map', this, 100)
+    t.worldMap = new WorldMap('geo-map', this, 160)
     t.languageCount = new LanguageCount('language-count', this, 100)
   }
 
