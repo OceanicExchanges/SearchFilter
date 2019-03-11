@@ -12,7 +12,7 @@ export class WorldMap extends View {
       .translate([t.width / 2, t.height])
     let path = d3.geoPath().projection(t.projection)
     t.color = d3.scaleLinear()
-      .range(['blue', 'red'])
+      .range(['#50b1dd', '#f19233'])
     t.keyFunction = function (d) {
       return d.id
     }

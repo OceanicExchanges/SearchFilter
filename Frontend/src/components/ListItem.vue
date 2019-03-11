@@ -91,15 +91,15 @@ export default {
 </script>
 <style>
   .mark-include {
-    background-color: #1b9e77;
+    background-color: #4bf133;
   }
 
   .mark-exclude {
-    background-color: #d95f02;
+    background-color: #f19233;
   }
 
   .mark-search {
-    background-color: #7570b3;
+    background-color: #50b1dd;
   }
 
   .text {
