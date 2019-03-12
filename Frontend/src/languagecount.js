@@ -62,6 +62,7 @@ export class LanguageCount extends View {
         return t.height - t.y(d.value + 1)
       })
       .on('click', function (d, i) {
+        if (d.key === '') { return }
         if (d.key === t.viewCoordinator.searchState.language) {
           d3.select(this).attr('fill', t.color(i % t.colorList.length))
           d3.selectAll(t.dotMainClass).attr('fill',
