@@ -22,6 +22,8 @@ public abstract class MainServlet extends HttpServlet {
   private void prepareResponse(HttpServletRequest request,
                                HttpServletResponse response)
     throws IOException {
+    response.setContentType(C.ContentTypes.JSON);
+    response.setCharacterEncoding("UTF-8");
     writer = response.getWriter();
     queryParameterMap = request.getParameterMap();
   }
@@ -31,8 +33,6 @@ public abstract class MainServlet extends HttpServlet {
   }
 
   private void finishResponse(HttpServletResponse response, String result) {
-    response.setContentType(C.ContentTypes.JSON);
-    response.setCharacterEncoding("UTF-8");
     writer.write(result);
     writer.close();
   }
