@@ -11,8 +11,9 @@ export class WorldMap extends View {
     t.projection = d3.geoMercator().scale(t.width / 2 / Math.PI)
       .translate([t.width / 2, t.height])
     let path = d3.geoPath().projection(t.projection)
+    t.colorList = ['#4575b4', '#d73027']
     t.color = d3.scaleLinear()
-      .range(['#50b1dd', '#f19233'])
+      .range(t.colorList)
     t.keyFunction = function (d) {
       return d.id
     }

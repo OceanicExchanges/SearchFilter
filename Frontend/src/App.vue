@@ -146,12 +146,13 @@ export default {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    border: 4px solid #4575b4;
   }
 
   li {
-    border: 1px solid #ddd;
-    margin-top: -1px; /* Prevent double borders */
-    background-color: #f6f6f6;
+    border: 4px solid white;
+    margin-top: -4px; /* Prevent double borders */
+    background-color: white;
     padding: 12px;
     text-decoration: none;
     font-size: 18px;
@@ -160,7 +161,6 @@ export default {
   }
 
   li:hover {
-    background-color: #eee;
     cursor: default;
   }
 

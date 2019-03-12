@@ -10,12 +10,13 @@ export class LanguageCount extends View {
     t.xAxis = d3.axisBottom().scale(t.x)
     t.y = d3.scaleLog().range([t.height, 0])
     t.yAxis = d3.axisLeft().scale(t.y)
-    t.colorList = ['#50b1dd',
-      '#f19233',
-      '#A07A19',
-      '#AC30C0',
-      '#EB9A72',
-      '#EA22A8']
+    t.colorList = [
+      '#d73027',
+      '#4575b4',
+      '#762a83',
+      '#1a9850',
+      '#fee08b'
+    ]
     t.color = d3.scaleOrdinal().range(t.colorList)
     t.mainShape = 'rect'
     t.mainClass = 'bar'

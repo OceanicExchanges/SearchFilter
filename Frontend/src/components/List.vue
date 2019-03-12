@@ -88,6 +88,6 @@ export default {
 
   .element {
     text-align: center;
-    width: 32%;
+    width: 33.4%;
   }
 </style>

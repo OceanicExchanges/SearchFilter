@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     markTerms: function (terms) {
-      var t = this
+      let t = this
       t.textMark.clear('mark-search')
       for (let i in t.terms) {
         let term = t.terms[i]
@@ -43,7 +43,7 @@ export default {
       }
     },
     addInclude: function (term) {
-      var t = this
+      let t = this
       t.$emit('selectionEvent', {
         type: 'addInclude',
         id: t.item.id,
@@ -51,7 +51,7 @@ export default {
       })
     },
     removeInclude: function (term) {
-      var t = this
+      let t = this
       t.$emit('selectionEvent', {
         type: 'removeInclude',
         id: t.item.id,
@@ -59,7 +59,7 @@ export default {
       })
     },
     addExclude: function (term) {
-      var t = this
+      let t = this
       t.$emit('selectionEvent', {
         type: 'addExclude',
         id: t.item.id,
@@ -67,7 +67,7 @@ export default {
       })
     },
     removeExclude: function (term) {
-      var t = this
+      let t = this
       t.$emit('selectionEvent', {
         type: 'removeExclude',
         id: t.item.id,
@@ -75,7 +75,7 @@ export default {
       })
     },
     clearMarks: function () {
-      var t = this
+      let t = this
       t.textMark.clear('mark-include')
       t.textMark.clear('mark-exclude')
       t.$emit('selectionEvent', {type: 'clear', id: t.item.id})
@@ -91,15 +91,15 @@ export default {
 </script>
 <style>
   .mark-include {
-    background-color: #4bf133;
+    background-color: #4575b4;
   }
 
   .mark-exclude {
-    background-color: #f19233;
+    background-color: #d73027;
   }
 
   .mark-search {
-    background-color: #50b1dd;
+    background-color: #abd9e9;
   }
 
   .text {
@@ -108,6 +108,6 @@ export default {
   }
 
   .text:hover {
-    background-color: #bbb;
+    background-color: #8aeaf8;
   }
 </style>
