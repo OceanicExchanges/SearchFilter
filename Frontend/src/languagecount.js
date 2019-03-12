@@ -61,13 +61,15 @@ export class LanguageCount extends View {
       .attr('height', function (d) {
         return t.height - t.y(d.value + 1)
       })
-      .on('click', function (d) {
+      .on('click', function (d, i) {
         if (d.key === t.viewCoordinator.searchState.language) {
-          d3.select(this).style('stroke', 'white')
+          d3.select(this).attr('fill', t.color(i % t.colorList.length))
+          d3.selectAll(t.dotMainClass).attr('fill',
+            function (d, i) { return t.color(i % t.colorList.length) })
           t.dispatch.call('languageClear')
         } else {
-          d3.selectAll(t.dotMainClass).style('stroke', 'white')
-          d3.select(this).style('stroke', 'black')
+          d3.selectAll(t.dotMainClass).attr('fill', t.defaultGray)
+          d3.select(this).attr('fill', t.color(i % t.colorList.length))
           t.dispatch.call('languageSelection', t, d.key)
         }
       })
