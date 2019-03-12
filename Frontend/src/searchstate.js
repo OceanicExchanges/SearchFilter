@@ -8,6 +8,7 @@ export class SearchState {
   constructor (infoLineData) {
     this.infoLineData = infoLineData
     this.lastQueryString = ''
+    this.language = undefined
   }
 
   static selectionAddEvent (id, term, set) {
@@ -45,6 +46,7 @@ export class SearchState {
     this.latitudeRange = []
     this.selections = {}
     this.exclusions = {}
+    this.language = undefined
   }
 
   selectionEvent (selection) {
@@ -148,6 +150,14 @@ export class SearchState {
     return lengthRange
   }
 
+  selectLanguage (language) {
+    this.language = language
+  }
+
+  clearLanguage () {
+    this.language = undefined
+  }
+
   /**
    * Return a string that contains the URL search parameters.
    * @returns {string} the search URL parameters
@@ -161,6 +171,9 @@ export class SearchState {
       length: this.getLengthRange().join(','),
       longitude: this.longitudeRange.join(','),
       latitude: this.latitudeRange.join(',')
+    }
+    if (typeof this.language !== 'undefined' && this.language.length > 0) {
+      parameters['language'] = this.language
     }
     parameters = Object.keys(parameters).filter(function (key) {
       return parameters[key].length > 0

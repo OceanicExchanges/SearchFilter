@@ -19,8 +19,8 @@ export class LanguageCount extends View {
     ]
     t.color = d3.scaleOrdinal().range(t.colorList)
     t.mainShape = 'rect'
-    t.mainClass = 'bar'
-    t.dotMainClass = '.bar'
+    t.mainClass = 'barLanguage'
+    t.dotMainClass = '.barLanguage'
     t.svg.append('g').attr('class', 'x axis')
     t.svg.append('g').attr('class', 'y axis')
     t.addTitle('Number of Documents per Language')
@@ -50,7 +50,7 @@ export class LanguageCount extends View {
     updateSelection.enter()
       .append(t.mainShape)
       .attr('class', t.mainClass)
-      .attr('fill', function (d, i) { return t.color(i % t.colorList.length)})
+      .attr('fill', function (d, i) { return t.color(i % t.colorList.length) })
       .attr('x', function (d) {
         return t.x(d.key)
       })
@@ -61,11 +61,15 @@ export class LanguageCount extends View {
       .attr('height', function (d) {
         return t.height - t.y(d.value + 1)
       })
-      .on('mouseover', function (d) {
-        t.dispatch.call('languageSelection', t, d.key)
-      })
-      .on('mouseout', function () {
-        t.dispatch.call('languageClear')
+      .on('click', function (d) {
+        if (d.key === t.viewCoordinator.searchState.language) {
+          d3.select(this).style('stroke', 'white')
+          t.dispatch.call('languageClear')
+        } else {
+          d3.selectAll(t.dotMainClass).style('stroke', 'white')
+          d3.select(this).style('stroke', 'black')
+          t.dispatch.call('languageSelection', t, d.key)
+        }
       })
     t.svg.select('.x.axis').transition()
       .duration(t.transition)

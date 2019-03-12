@@ -37,8 +37,7 @@ export class ViewCoordinator {
     // Event handling
     t.dispatch = d3.dispatch('dateStart', 'dateEnd', 'dateClear',
       'lengthStart', 'lengthEnd', 'lengthClear',
-      'mapStart', 'mapEnd', 'languageSelection',
-      'languageClear')
+      'mapStart', 'mapEnd', 'languageSelection', 'languageClear')
     t.cf = cf(t.documents)
     t.createDimensionsGroups()
     t.createViews()
@@ -163,10 +162,12 @@ export class ViewCoordinator {
     })
     t.dispatch.on('languageSelection', function (language) {
       t.languageDimension.filterExact(language)
+      t.searchState.selectLanguage(language)
       t.updateVisualization()
     })
     t.dispatch.on('languageClear', function () {
       t.languageDimension.filterAll()
+      t.searchState.clearLanguage()
       t.updateVisualization()
     })
   }
