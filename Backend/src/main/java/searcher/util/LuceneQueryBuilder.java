@@ -22,6 +22,7 @@ public class LuceneQueryBuilder {
   private static final String TIME = "time";
   private static final String LONGITUDE = "longitude";
   private static final String LATITUDE = "latitude";
+  private static final String LANGUAGE = "language";
 
   /**
    * Map that contains all the query fields
@@ -107,7 +108,17 @@ public class LuceneQueryBuilder {
       booleanQueryBuilder.add(getDoubleRange(C.FieldNames.LATITUDE, range),
         BooleanClause.Occur.MUST);
     }
+    if (queryMap.containsKey(LANGUAGE)) {
+      String language = queryMap.get(LANGUAGE)[0].split(",")[0];
+      booleanQueryBuilder
+        .add(getTermQuery(LANGUAGE, language), BooleanClause.Occur.MUST);
+
+    }
     return booleanQueryBuilder.build();
+  }
+
+  private Query getTermQuery(final String fieldName, String term) {
+    return new TermQuery(new Term(fieldName, term));
   }
 
   /**
