@@ -11,9 +11,6 @@ export class WorldMap extends View {
     t.projection = d3.geoMercator().scale(t.width / 2 / Math.PI)
       .translate([t.width / 2, t.height])
     let path = d3.geoPath().projection(t.projection)
-    t.colorList = ['#4575b4', '#d73027']
-    t.color = d3.scaleLinear()
-      .range(t.colorList)
     t.keyFunction = function (d) {
       return d.id
     }
@@ -54,9 +51,6 @@ export class WorldMap extends View {
   update (data) {
     let t = this
     if (t.prepared) {
-      t.color.domain(d3.extent(data, function (d) {
-        return d.date
-      }))
       let updateSelection = t.svgFull.selectAll('circle')
         .data(data.filter(function (d) {
           return 'latitude' in d && 'longitude' in d
@@ -73,9 +67,7 @@ export class WorldMap extends View {
         .attr('r', function (d) {
           return d.hasOwnProperty('radius') ? d.radius : 2
         })
-        .attr('fill', function (d) {
-          return t.color(d.date)
-        })
+        .attr('fill', '#d73027')
     } else {
       t.data = data
     }
