@@ -22,6 +22,9 @@ public class Main {
     indexDocuments();
   }
 
+  private static final String GZIP_CSV = "gzipcsv";
+  private static final String GZIP_JSON = "gzipjson";
+
   private static void indexDocuments()
     throws IOException, InterruptedException {
     // Clear previous index
@@ -35,13 +38,13 @@ public class Main {
     String type = C.Process.type();
     for (File file : files) {
       switch (type) {
-        case "json": {
+        case GZIP_JSON: {
           ZippedJSONDocumentCreator documentCreator =
             new ZippedJSONDocumentCreator(file);
           executorService.execute(documentCreator);
           break;
         }
-        case "csv": {
+        case GZIP_CSV: {
           ZippedCSVDocumentCreator documentCreator =
             new ZippedCSVDocumentCreator(file);
           executorService.execute(documentCreator);
