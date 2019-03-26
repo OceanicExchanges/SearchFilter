@@ -1,5 +1,5 @@
 <template>
-  <button v-on:click="clicked" type="button"/>
+  <button id="button" v-on:click="clicked" type="button"/>
 </template>
 <script>
 export default {
@@ -24,5 +24,18 @@ export default {
 
   button:hover {
     background-color: #eee;
+  }
+
+  .loader {
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 </style>

@@ -53,11 +53,14 @@ export default {
     updateDocumentData: function (data) {
       this.updateBasicInformation(data.basicInformation)
       this.viewCoordinator.setDocumentData(data)
+      this.stopLoading()
     },
     updateTextData: function (data) {
       this.items = data.documents
+      this.stopLoading()
     },
     sendQuery: function (queryString) {
+      this.startLoading()
       query('query?' + encodeURI(queryString), this.updateDocumentData)
       query('text?page=1&' + encodeURI(queryString), this.updateTextData)
     },
@@ -79,10 +82,12 @@ export default {
       this.sendQuery(queryString)
     },
     moreLikeThisEvent: function (id) {
+      this.startLoading()
       query('like?id=' + id, this.updateDocumentData)
       query('textLike?page=1&id=' + id, this.updateTextData)
     },
     topicMoreLikeThisEvent: function (topicTerms) {
+      this.startLoading()
       query('query?primary=' + topicTerms.join(','), this.updateDocumentData)
       query('text?page=1&primary=' + topicTerms.join(','), this.updateTextData)
     },
@@ -97,6 +102,7 @@ export default {
     },
     pageEvent: function (page) {
       let queryString = this.searchState.lastQueryString
+      this.startLoading()
       query('text?page=' + page + '&' + encodeURI(queryString),
         this.updateTextData)
     },
@@ -107,7 +113,16 @@ export default {
       let searchBarText = t.$refs.searchBar.getInput()
       t.searchState.setTerms(searchBarText)
       let queryString = this.searchState.parameter()
+      this.startLoading()
       query('text?page=1&' + encodeURI(queryString), this.updateTextData)
+    },
+    startLoading: function () {
+      const button = document.getElementById('button')
+      button.className += ' loader'
+    },
+    stopLoading: function () {
+      const button = document.getElementById('button')
+      button.classList.remove('loader')
     }
   },
   mounted: function () {
