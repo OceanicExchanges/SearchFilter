@@ -86,11 +86,6 @@ export default {
       query('like?id=' + id, this.updateDocumentData)
       query('textLike?page=1&id=' + id, this.updateTextData)
     },
-    topicMoreLikeThisEvent: function (topicTerms) {
-      this.startLoading()
-      query('query?primary=' + topicTerms.join(','), this.updateDocumentData)
-      query('text?page=1&primary=' + topicTerms.join(','), this.updateTextData)
-    },
     selectionEvent: function (selection) {
       this.searchState.selectionEvent(selection)
     },
