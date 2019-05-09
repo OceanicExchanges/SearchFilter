@@ -47,7 +47,7 @@ public class DocumentSearcher extends Searcher {
     json.startJSON();
     addDocuments(docs);
     json.separate();
-    addBasicInformation(docs.totalHits, docs.scoreDocs.length,
+    addBasicInformation(docs.totalHits.value, docs.scoreDocs.length,
       query.toString());
     json.endJSON();
     return json.toString();
