@@ -1,4 +1,5 @@
 backend.iml
 Backend.iml
 target
-src/main/webapp/
+src/main/webapp/index.html
+src/main/webapp/static/
