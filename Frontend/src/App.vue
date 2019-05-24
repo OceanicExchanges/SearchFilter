@@ -12,6 +12,7 @@
         <div id="documentCount"></div>
         <div id="textLength"></div>
         <div id="language-count"></div>
+        <div id="cluster-count"></div>
       </div>
       <div class="grid50" v-if="items.length > 0">
         <list v-bind:items="items"

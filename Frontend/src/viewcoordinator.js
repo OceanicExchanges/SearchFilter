@@ -7,6 +7,7 @@ import {TextLength} from './textlength.js'
 import {DocumentCount} from './documentcount.js'
 import {WorldMap} from './worldmap'
 import {LanguageCount} from './languagecount.js'
+import {Cluster} from './cluster.js'
 
 const NUMBER_LENGTH_BINS = 10
 
@@ -33,6 +34,7 @@ export class ViewCoordinator {
     t.documents.forEach(function (d) {
       d.date = parseDate(d.date)
       d.id = +d.id
+      d.cluster = +d.cluster
     })
     // Event handling
     t.dispatch = d3.dispatch('dateStart', 'dateEnd', 'dateClear',
@@ -81,6 +83,10 @@ export class ViewCoordinator {
       return d.language
     }, true)
     t.languageGroup = t.languageDimension.group()
+    t.clusterDimension = t.cf.dimension(function (d) {
+      return d.cluster
+    })
+    t.clusterDimensionGroup = t.clusterDimension.group()
   }
 
   /**
@@ -106,6 +112,7 @@ export class ViewCoordinator {
     t.documentCount.prepare()
     t.worldMap.prepare()
     t.languageCount.prepare()
+    t.clusterCount.prepare()
   }
 
   createViews () {
@@ -114,6 +121,7 @@ export class ViewCoordinator {
     t.textLength = new TextLength('textLength', this, 90)
     t.worldMap = new WorldMap('geo-map', this, 190)
     t.languageCount = new LanguageCount('language-count', this, 90)
+    t.clusterCount = new Cluster('cluster-count', this, 90)
   }
 
   setupDispatch () {
@@ -178,6 +186,7 @@ export class ViewCoordinator {
     t.textLength.update(t.textLengthData())
     t.worldMap.update(t.locationDimension.top(Infinity))
     t.languageCount.update(t.languageGroup.reduceCount().top(Infinity))
+    t.clusterCount.update(t.clusterDimensionGroup.reduceCount().top(10))
     t.vue.updateSelected(t.locationDimension.top(Infinity).length)
     t.vue.filterEvent()
   }
