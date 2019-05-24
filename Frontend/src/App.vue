@@ -3,6 +3,7 @@
     <div class="header">
       <search-bar ref="searchBar" @searchBarEvent="searchBarEvent"/>
       <search-button @filterSearchEvent="filterSearchEvent"/>
+      <export-button @exportEvent="exportEvent"/>
     </div>
     <info-line v-bind="infoLineData" @tagEvent="tagEvent"/>
     <div class="grid">
@@ -26,9 +27,10 @@
 <script>
 import SearchBar from './components/SearchBar.vue'
 import Button from './components/Button.vue'
+import ExportButton from './components/ExportButton.vue'
 import InfoLine from './components/InfoLine.vue'
 import List from './components/List.vue'
-import {query} from './query.js'
+import {query, download} from './query.js'
 import {ViewCoordinator} from './viewcoordinator.js'
 import {SearchState} from './searchstate.js'
 
@@ -37,6 +39,7 @@ export default {
   components: {
     'search-bar': SearchBar,
     'search-button': Button,
+    'export-button': ExportButton,
     'info-line': InfoLine,
     'list': List
   },
@@ -80,6 +83,12 @@ export default {
       this.viewCoordinator.clear()
       this.items = []
       this.sendQuery(queryString)
+    },
+    exportEvent: function () {
+      let searchBarText = this.$refs.searchBar.getInput()
+      this.searchState.setTerms(searchBarText)
+      let queryString = this.searchState.parameter()
+      download('export?' + queryString)
     },
     moreLikeThisEvent: function (id) {
       this.startLoading()

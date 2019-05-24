@@ -1,4 +1,5 @@
 node_modules
 static/query.json
 static/text.json
+static/export.csv
 Frontend.iml

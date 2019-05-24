@@ -1,12 +1,13 @@
 <template>
-  <button id="button" v-on:click="clicked" type="button"/>
+  <button id="export-button" v-on:click="clicked" type="button"/>
 </template>
 <script>
+
 export default {
-  name: 'Button',
+  name: 'ExportButton',
   methods: {
     clicked: function () {
-      this.$emit('filterSearchEvent')
+      this.$emit('exportEvent')
     }
   }
 }
@@ -16,7 +17,7 @@ export default {
     margin-left: -1px;
     border: 1px solid #ddd;
     padding: 23px 24px 24px 23px;
-    background: white url('../assets/filter.svg') no-repeat 8px 8px;
+    background: white url('../assets/download.svg') no-repeat 8px 8px;
     float: left;
     transition-duration: 0.1s;
     outline: none;
