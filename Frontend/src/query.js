@@ -25,3 +25,11 @@ export function query (relativeUrl, callback) {
   }
   _.httpGetJSON(url, callback)
 }
+
+export function download (relativeUrl) {
+  if (process.env.NODE_ENV === 'development') {
+    window.open('static/export.csv', '_self')
+  } else {
+    window.open(relativeUrl, '_self')
+  }
+}

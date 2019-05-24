@@ -23,6 +23,10 @@
         <servlet-name>TextLikenessServlet</servlet-name>
         <servlet-class>servlets.FullTextMoreLikeThisServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ExportServlet</servlet-name>
+        <servlet-class>servlets.ExportServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DocumentServlet</servlet-name>
         <url-pattern>/query</url-pattern>
@@ -38,6 +42,10 @@
     <servlet-mapping>
         <servlet-name>TextLikenessServlet</servlet-name>
         <url-pattern>/textLike</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExportServlet</servlet-name>
+        <url-pattern>/export</url-pattern>
     </servlet-mapping>
     <security-constraint>
         <web-resource-collection>
