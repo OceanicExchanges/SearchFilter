@@ -11,11 +11,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "crossfilter2": "^1.4.6",
+    "crossfilter2": "^1.4.7",
     "d3": "~5.5.0",
     "utiljs": "file:../../utiljs",
     "vue": "^2.6.10",
-    "vue-router": "^3.0.2"
+    "vue-router": "^3.0.6"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.6",
@@ -36,7 +36,7 @@
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",
-    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
