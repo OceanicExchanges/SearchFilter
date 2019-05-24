@@ -179,6 +179,15 @@ public abstract class DocumentCreator implements Runnable {
   }
 
   /**
+   * Add cluster ID
+   * @param cluster
+   * @param visualization JSON that contains the visualization data
+   */
+  final void addCluster(String cluster, JSONObject visualization) {
+    visualization.put(C.JSONFieldNames.CLUSTER, cluster);
+  }
+
+  /**
    * Return the latitude of the given place of publication
    *
    * @param placeOfPublication
