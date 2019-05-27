@@ -5,6 +5,7 @@
       <search-button @filterSearchEvent="filterSearchEvent"/>
       <export-button @exportEvent="exportEvent"/>
     </div>
+    <div id="loader"></div>
     <info-line v-bind="infoLineData" @tagEvent="tagEvent"/>
     <div class="grid">
       <div class="grid50">
@@ -57,11 +58,13 @@ export default {
     updateDocumentData: function (data) {
       this.updateBasicInformation(data.basicInformation)
       this.viewCoordinator.setDocumentData(data)
+      this.hideLoader()
     },
     updateTextData: function (data) {
       this.items = data.documents
     },
     sendQuery: function (queryString) {
+      this.displayLoader()
       query('query?' + encodeURI(queryString), this.updateDocumentData)
       query('text?page=1&' + encodeURI(queryString), this.updateTextData)
     },
@@ -89,7 +92,7 @@ export default {
       download('export?' + queryString)
     },
     moreLikeThisEvent: function (id) {
-      this.startLoading()
+      this.displayLoader()
       query('like?id=' + id, this.updateDocumentData)
       query('textLike?page=1&id=' + id, this.updateTextData)
     },
@@ -104,7 +107,6 @@ export default {
     },
     pageEvent: function (page) {
       let queryString = this.searchState.lastQueryString
-      this.startLoading()
       query('text?page=' + page + '&' + encodeURI(queryString),
         this.updateTextData)
     },
@@ -116,6 +118,14 @@ export default {
       t.searchState.setTerms(searchBarText)
       let queryString = this.searchState.parameter()
       query('text?page=1&' + encodeURI(queryString), this.updateTextData)
+    },
+    displayLoader: function () {
+      let loader = document.getElementById('loader')
+      loader.style.display = 'initial'
+    },
+    hideLoader: function () {
+      let loader = document.getElementById('loader')
+      loader.style.display = 'none'
     }
   },
   mounted: function () {
@@ -178,5 +188,22 @@ export default {
 
   .grid50 {
     flex-basis: 49%;
+  }
+
+  #loader {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #666666;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 </style>
