@@ -47,6 +47,7 @@ export class SearchState {
     this.selections = {}
     this.exclusions = {}
     this.language = undefined
+    this.cluster = undefined
   }
 
   selectionEvent (selection) {
@@ -158,6 +159,14 @@ export class SearchState {
     this.language = undefined
   }
 
+  selectCluster (cluster) {
+    this.cluster = cluster
+  }
+
+  clearCluster () {
+    this.cluster = undefined
+  }
+
   /**
    * Return a string that contains the URL search parameters.
    * @returns {string} the search URL parameters
@@ -175,8 +184,18 @@ export class SearchState {
     if (typeof this.language !== 'undefined' && this.language.length > 0) {
       parameters['language'] = this.language
     }
+    if (typeof this.cluster !== 'undefined') {
+      parameters['cluster'] = this.cluster
+    }
     parameters = Object.keys(parameters).filter(function (key) {
-      return parameters[key].length > 0
+      switch (typeof parameters[key]) {
+        case 'string':
+          return parameters[key].length > 0
+        case 'number':
+          return true
+        default:
+          return false
+      }
     }).map(function (key) {
       return key + '=' + parameters[key]
     })

@@ -39,7 +39,8 @@ export class ViewCoordinator {
     // Event handling
     t.dispatch = d3.dispatch('dateStart', 'dateEnd', 'dateClear',
       'lengthStart', 'lengthEnd', 'lengthClear',
-      'mapStart', 'mapEnd', 'languageSelection', 'languageClear')
+      'mapStart', 'mapEnd', 'languageSelection', 'languageClear',
+      'clusterSelection', 'clusterClear')
     t.cf = cf(t.documents)
     t.createDimensionsGroups()
     t.createViews()
@@ -117,11 +118,11 @@ export class ViewCoordinator {
 
   createViews () {
     let t = this
-    t.documentCount = new DocumentCount('documentCount', this, 90)
-    t.textLength = new TextLength('textLength', this, 90)
-    t.worldMap = new WorldMap('geo-map', this, 190)
-    t.languageCount = new LanguageCount('language-count', this, 90)
-    t.clusterCount = new Cluster('cluster-count', this, 90)
+    t.documentCount = new DocumentCount('documentCount', this, 60)
+    t.textLength = new TextLength('textLength', this, 60)
+    t.worldMap = new WorldMap('geo-map', this, 150)
+    t.languageCount = new LanguageCount('language-count', this, 60)
+    t.clusterCount = new Cluster('cluster-count', this, 30)
   }
 
   setupDispatch () {
@@ -176,6 +177,16 @@ export class ViewCoordinator {
     t.dispatch.on('languageClear', function () {
       t.languageDimension.filterAll()
       t.searchState.clearLanguage()
+      t.updateVisualization()
+    })
+    t.dispatch.on('clusterSelection', function (cluster) {
+      t.clusterDimension.filterExact(cluster)
+      t.searchState.selectCluster(cluster)
+      t.updateVisualization()
+    })
+    t.dispatch.on('clusterClear', function () {
+      t.clusterDimension.filterAll()
+      t.searchState.clearCluster()
       t.updateVisualization()
     })
   }

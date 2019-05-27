@@ -149,6 +149,11 @@ public class C {
 
   public static class ContentTypes {
     public static final String JSON = "application/json";
+    public static final String CSV = "application/csv";
+  }
+
+  public static class ContentEncoding {
+    public static final String UTF8 = "UTF-8";
   }
 
   public static class FieldNames {
@@ -169,6 +174,7 @@ public class C {
     public static final String TEXT_DATA = "textData";
     public static final String LONGITUDE = "longitude";
     public static final String LATITUDE = "latitude";
+    public static final String CLUSTER = "cluster";
   }
 
   public static class JSONFieldNames {

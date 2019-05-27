@@ -3,6 +3,7 @@ package searcher.util;
 import de.uni_stuttgart.corpusexplorer.common.configuration.C;
 import org.apache.lucene.document.DoublePoint;
 import org.apache.lucene.document.IntPoint;
+import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.*;
 
@@ -23,6 +24,7 @@ public class LuceneQueryBuilder {
   private static final String LONGITUDE = "longitude";
   private static final String LATITUDE = "latitude";
   private static final String LANGUAGE = "language";
+  private static final String CLUSTER = "cluster";
 
   /**
    * Map that contains all the query fields
@@ -114,11 +116,19 @@ public class LuceneQueryBuilder {
         .add(getTermQuery(LANGUAGE, language), BooleanClause.Occur.MUST);
 
     }
+    if (queryMap.containsKey(CLUSTER)) {
+      long cluster = Long.parseLong(queryMap.get(CLUSTER)[0].split(",")[0]);
+      booleanQueryBuilder.add(getTermQuery(CLUSTER, cluster), BooleanClause.Occur.MUST);
+    }
     return booleanQueryBuilder.build();
   }
 
   private Query getTermQuery(final String fieldName, String term) {
     return new TermQuery(new Term(fieldName, term));
+  }
+
+  private Query getTermQuery(final String fieldName, long number) {
+    return LongPoint.newExactQuery(fieldName, number);
   }
 
   /**

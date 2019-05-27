@@ -47,6 +47,7 @@
         <servlet-name>ExportServlet</servlet-name>
         <url-pattern>/export</url-pattern>
     </servlet-mapping>
+    <!--
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>web</web-resource-name>
@@ -63,4 +64,5 @@
         <auth-method>BASIC</auth-method>
         <realm-name>Secured App</realm-name>
     </login-config>
+    -->
 </web-app>

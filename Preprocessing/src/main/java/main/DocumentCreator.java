@@ -37,6 +37,7 @@ public abstract class DocumentCreator implements Runnable {
   final DoublePoint longitudeField;
   final DoublePoint latitudeField;
   final Field languageField;
+  final LongPoint clusterField;
 
   DocumentCreator(File file) throws IOException {
     this.file = file;
@@ -67,6 +68,7 @@ public abstract class DocumentCreator implements Runnable {
     longitudeField = new DoublePoint(C.FieldNames.LONGITUDE, 0.0);
     latitudeField = new DoublePoint(C.FieldNames.LATITUDE, 0.0);
     languageField = new Field(C.FieldNames.LANGUAGE, "", languageFieldType);
+    clusterField = new LongPoint(C.FieldNames.CLUSTER, 0);
     document = new Document();
     document.add(idField);
     document.add(visualizationData);
@@ -77,6 +79,7 @@ public abstract class DocumentCreator implements Runnable {
     document.add(longitudeField);
     document.add(latitudeField);
     document.add(languageField);
+    document.add(clusterField);
     writer = IndexWriteSingleton.getInstance();
   }
 
@@ -180,11 +183,13 @@ public abstract class DocumentCreator implements Runnable {
 
   /**
    * Add cluster ID
-   * @param cluster
+   * @param clusterString
    * @param visualization JSON that contains the visualization data
    */
-  final void addCluster(String cluster, JSONObject visualization) {
+  final void addCluster(String clusterString, JSONObject visualization) {
+    long cluster = Long.parseLong(clusterString);
     visualization.put(C.JSONFieldNames.CLUSTER, cluster);
+    clusterField.setLongValue(cluster);
   }
 
   /**

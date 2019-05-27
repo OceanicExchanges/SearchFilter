@@ -53,20 +53,15 @@ export class Cluster extends View {
       .attr('height', function (d) {
         return t.height - t.y(d.value)
       })
-      .on('click', function (d, i) {
-        /*
-        if (d.key === '') { return }
-        if (d.key === t.viewCoordinator.searchState.language) {
-          d3.select(this).attr('fill', t.color(i % t.colorList.length))
-          d3.selectAll(t.dotMainClass).attr('fill',
-            function (d, i) { return t.color(i % t.colorList.length) })
-          t.dispatch.call('languageClear')
+      .on('click', function (d) {
+        if (d.key === t.viewCoordinator.searchState.cluster) {
+          d3.selectAll(t.dotMainClass).attr('fill', t.defaultGray)
+          t.dispatch.call('clusterClear')
         } else {
           d3.selectAll(t.dotMainClass).attr('fill', t.defaultGray)
-          d3.select(this).attr('fill', t.color(i % t.colorList.length))
-          t.dispatch.call('languageSelection', t, d.key)
+          d3.select(this).attr('fill', 'red')
+          t.dispatch.call('clusterSelection', t, d.key)
         }
-        */
       })
     t.svg.select('.x.axis').transition()
       .duration(t.transition)
@@ -74,6 +69,6 @@ export class Cluster extends View {
       .call(t.xAxis)
     t.svg.select('.y.axis').transition()
       .duration(t.transition)
-      .call(t.yAxis.ticks(5, '.0s'))
+      .call(t.yAxis.ticks(3, '.0s'))
   }
 }
