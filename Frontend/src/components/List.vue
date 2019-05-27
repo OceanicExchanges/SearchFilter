@@ -67,7 +67,7 @@ export default {
 <style scoped>
   ul {
     overflow-y: scroll;
-    height: 800px;
+    height: 750px;
   }
 
   a {
