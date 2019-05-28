@@ -5,22 +5,25 @@
       <search-button @filterSearchEvent="filterSearchEvent"/>
       <export-button @exportEvent="exportEvent"/>
     </div>
-    <div id="loader"></div>
     <info-line v-bind="infoLineData" @tagEvent="tagEvent"/>
     <div class="grid">
       <div class="grid50">
+        <div id="data-loader"></div>
         <div id="geo-map"></div>
         <div id="documentCount"></div>
         <div id="textLength"></div>
         <div id="language-count"></div>
         <div id="cluster-count"></div>
       </div>
-      <div class="grid50" v-if="items.length > 0">
-        <list v-bind:items="items"
-              v-bind:terms="terms"
-              @moreLikeThisEvent="moreLikeThisEvent"
-              @selectionEvent="selectionEvent"
-              @pageEvent="pageEvent"/>
+      <div class="grid50">
+        <div id="text-loader"></div>
+        <div v-if="items.length > 0">
+          <list v-bind:items="items"
+                v-bind:terms="terms"
+                @moreLikeThisEvent="moreLikeThisEvent"
+                @selectionEvent="selectionEvent"
+                @pageEvent="pageEvent"/>
+        </div>
       </div>
     </div>
   </div>
@@ -58,14 +61,16 @@ export default {
     updateDocumentData: function (data) {
       this.updateBasicInformation(data.basicInformation)
       this.viewCoordinator.setDocumentData(data)
-      this.hideLoader()
+      this.hideLoader('data')
     },
     updateTextData: function (data) {
       this.items = data.documents
+      this.hideLoader('text')
     },
     sendQuery: function (queryString) {
-      this.displayLoader()
+      this.displayLoader('data')
       query('query?' + encodeURI(queryString), this.updateDocumentData)
+      this.displayLoader('text')
       query('text?page=1&' + encodeURI(queryString), this.updateTextData)
     },
     searchBarEvent: function (searchText) {
@@ -93,7 +98,9 @@ export default {
     },
     moreLikeThisEvent: function (id) {
       this.displayLoader()
+      this.displayLoader('data')
       query('like?id=' + id, this.updateDocumentData)
+      this.displayLoader('text')
       query('textLike?page=1&id=' + id, this.updateTextData)
     },
     selectionEvent: function (selection) {
@@ -107,6 +114,7 @@ export default {
     },
     pageEvent: function (page) {
       let queryString = this.searchState.lastQueryString
+      this.displayLoader('text')
       query('text?page=' + page + '&' + encodeURI(queryString),
         this.updateTextData)
     },
@@ -117,14 +125,15 @@ export default {
       let searchBarText = t.$refs.searchBar.getInput()
       t.searchState.setTerms(searchBarText)
       let queryString = this.searchState.parameter()
+      this.displayLoader('text')
       query('text?page=1&' + encodeURI(queryString), this.updateTextData)
     },
-    displayLoader: function () {
-      let loader = document.getElementById('loader')
+    displayLoader: function (type) {
+      let loader = document.getElementById(`${type}-loader`)
       loader.style.display = 'initial'
     },
-    hideLoader: function () {
-      let loader = document.getElementById('loader')
+    hideLoader: function (type) {
+      let loader = document.getElementById(`${type}-loader`)
       loader.style.display = 'none'
     }
   },
@@ -187,12 +196,13 @@ export default {
   }
 
   .grid50 {
+    position: relative;
     flex-basis: 49%;
   }
 
-  #loader {
+  #text-loader, #data-loader {
     display: none;
-    position: fixed;
+    position: absolute;
     top: 50%;
     left: 50%;
     border: 16px solid #f3f3f3;
