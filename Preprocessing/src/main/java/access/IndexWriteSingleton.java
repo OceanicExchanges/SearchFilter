@@ -1,7 +1,11 @@
 package access;
 
 import de.uni_stuttgart.corpusexplorer.common.configuration.C;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.core.StopFilterFactory;
+import org.apache.lucene.analysis.custom.CustomAnalyzer;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.FSDirectory;
@@ -30,10 +34,21 @@ public class IndexWriteSingleton {
   public static IndexWriter getInstance() throws IOException {
     if (indexWriterInstance == null) {
       FSDirectory directory = FSDirectory.open(Paths.get(C.FilePath.index()));
-      IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+      IndexWriterConfig config = new IndexWriterConfig(buildAnalyzer());
       indexWriterInstance = new IndexWriter(directory, config);
     }
     return indexWriterInstance;
+  }
+
+  private static Analyzer buildAnalyzer() throws IOException {
+    return CustomAnalyzer.builder(Paths.get(C.FilePath.project()))
+        .withTokenizer(StandardTokenizerFactory.class)
+        .addTokenFilter(LowerCaseFilterFactory.class)
+        .addTokenFilter(StopFilterFactory.class,
+          "ignoreCase", "false",
+          "words", C.FilePath.stopwords(),
+          "format", "wordset")
+        .build();
   }
 
   /**
