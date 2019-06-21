@@ -105,6 +105,15 @@ public class C {
     public static String dictionary(String language) {
       return C.getS(PROJECT) + C.getS(DICTIONARY) + "/" + language + ".txt";
     }
+
+    private static final String STOPWORDS = "file.path.stopwords";
+
+    /**
+     * @return path to file containing stopwords
+     */
+    public static String stopwords() {
+      return C.getS(PROJECT) + C.getS(STOPWORDS);
+    }
   }
 
   public static class Process {
