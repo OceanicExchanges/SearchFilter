@@ -137,15 +137,15 @@ public class C {
   }
 
   public static class CSV {
-    public static final int ID = 0;
-    public static final int DATE = 7;
-    public static final int TEXT = 10;
-    public static final int OPEN_DOCUMENT = 24;
-    public static final int LANGUAGE = 37;
-    public static final int PLACE_OF_PUBLICATION = 38;
-    public static final int LINK = 13;
-    public static final int PUBLISHER = 38;
-    public static final int CLUSTER = 3;
+    public static final int ID = 1;
+    public static final int DATE = 8;
+    public static final int TEXT = 9;
+    public static final int OPEN_DOCUMENT = 23;
+    public static final int LANGUAGE = 41;
+    public static final int PLACE_OF_PUBLICATION = 42;
+    public static final int LINK = 12;
+    public static final int PUBLISHER = 28;
+    public static final int CLUSTER = 2;
   }
 
   public static class JSON {
