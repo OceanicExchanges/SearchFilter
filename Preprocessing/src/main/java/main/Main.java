@@ -53,7 +53,7 @@ public class Main {
       }
     }
     executorService.shutdown();
-    executorService.awaitTermination(48, TimeUnit.HOURS);
+    executorService.awaitTermination(24 * 7, TimeUnit.HOURS);
     IndexWriteSingleton.deleteInstance();
   }
 }
