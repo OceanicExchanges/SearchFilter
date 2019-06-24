@@ -25,8 +25,8 @@ public class ZippedCSVDocumentCreator extends DocumentCreator {
       InputStreamReader inputStreamReader =
         new InputStreamReader(gzipInputStream);
       bufferedReader = new BufferedReader(inputStreamReader);
-      records =
-        CSVFormat.TDF.withHeader().withSkipHeaderRecord().parse(bufferedReader);
+      records = CSVFormat.DEFAULT.withHeader().withSkipHeaderRecord()
+        .parse(bufferedReader);
     } catch (IOException exception) {
       exception.printStackTrace();
       return;
