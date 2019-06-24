@@ -33,8 +33,8 @@ public class ZippedCSVDocumentCreator extends DocumentCreator {
     }
     boolean includeNonOpen = C.Process.includeNonOpen();
     for (CSVRecord record : records) {
-      String open = record.get(C.CSV.OPEN_DOCUMENT);
-      if (includeNonOpen && open.equals("true")) {
+      String open = record.get(C.CSV.OPEN_DOCUMENT).toLowerCase();
+      if (includeNonOpen || open.equals("true")) {
         addDocument(record);
       }
     }
