@@ -216,5 +216,8 @@ export class ViewCoordinator {
     if (t.languageCount !== undefined) {
       t.languageCount.update([])
     }
+    if (t.clusterCount !== undefined) {
+      t.clusterCount.update([])
+    }
   }
 }
