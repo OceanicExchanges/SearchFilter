@@ -5,7 +5,6 @@ import access.Location;
 import access.LocationSingleton;
 import de.uni_stuttgart.corpusexplorer.common.configuration.C;
 import org.apache.lucene.document.*;
-import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,13 +19,6 @@ public abstract class DocumentCreator implements Runnable {
     Logger.getLogger(DocumentCreator.class.getName());
   final IndexWriter writer;
   final Document document;
-
-  File file;
-  private IndexWriter indexWriter;
-  Map<String, Location> locations;
-  private FieldType textFieldType;
-  private FieldType languageFieldType;
-
   // Index fields
   final LongPoint idField;
   final StoredField visualizationData;
@@ -36,27 +28,14 @@ public abstract class DocumentCreator implements Runnable {
   final Field textField;
   final DoublePoint longitudeField;
   final DoublePoint latitudeField;
-  final Field languageField;
+  final StringField languageField;
   final LongPoint clusterField;
+  File file;
+  Map<String, Location> locations;
 
   DocumentCreator(File file) throws IOException {
     this.file = file;
-    this.indexWriter = IndexWriteSingleton.getInstance();
     this.locations = LocationSingleton.getInstance();
-    // Setup the field type for text
-    textFieldType = new FieldType();
-    textFieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS);
-    // Texts are stored with other data in textDataField
-    textFieldType.setStored(false);
-    // This is needed for the more like this functionality
-    textFieldType.setStoreTermVectors(true);
-    // Setup the field type for language data
-    languageFieldType = new FieldType();
-    // Texts are stored with other data in textDataField
-    languageFieldType.setIndexOptions(IndexOptions.DOCS);
-    languageFieldType.setStored(false);
-    // This is needed for the more like this functionality
-    languageFieldType.setStoreTermVectors(false);
     locations = LocationSingleton.getInstance();
     // Setup the fields
     idField = new LongPoint(C.FieldNames.ID, 0);
@@ -64,10 +43,10 @@ public abstract class DocumentCreator implements Runnable {
     textData = new StoredField(C.FieldNames.TEXT_DATA, "");
     lengthField = new IntPoint(C.FieldNames.LENGTH, 0);
     dateField = new StringField(C.FieldNames.DATE, "", Field.Store.NO);
-    textField = new Field(C.FieldNames.TEXT, "", textFieldType);
+    textField = new TextField(C.FieldNames.TEXT, "", Field.Store.NO);
     longitudeField = new DoublePoint(C.FieldNames.LONGITUDE, 0.0);
     latitudeField = new DoublePoint(C.FieldNames.LATITUDE, 0.0);
-    languageField = new Field(C.FieldNames.LANGUAGE, "", languageFieldType);
+    languageField = new StringField(C.FieldNames.LANGUAGE, "", Field.Store.NO);
     clusterField = new LongPoint(C.FieldNames.CLUSTER, 0);
     document = new Document();
     document.add(idField);
