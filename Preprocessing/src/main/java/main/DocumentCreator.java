@@ -157,11 +157,19 @@ public abstract class DocumentCreator implements Runnable {
    */
   final void addLanguages(String[] languages, JSONObject visualization) {
     visualization.put(C.JSONFieldNames.LANGUAGE, new JSONArray(languages));
-    languageField.setStringValue(String.join(" ", languages));
+    if (languages.length == 1) {
+      languageField.setStringValue(languages[0]);
+    } else if (languages.length > 1) {
+      for (int i = 1; i < languages.length; ++i) {
+        document.add(
+          new StringField(C.FieldNames.LANGUAGE, languages[i], Field.Store.NO));
+      }
+    }
   }
 
   /**
    * Add cluster ID
+   *
    * @param clusterString
    * @param visualization JSON that contains the visualization data
    */
