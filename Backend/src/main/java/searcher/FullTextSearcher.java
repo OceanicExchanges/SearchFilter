@@ -35,6 +35,7 @@ public class FullTextSearcher extends Searcher {
     } catch (IOException exception) {
       return handleException(exception);
     }
+    log.log(Level.INFO, "Found: " + docs.scoreDocs.length + " documents.");
     int start = docs.scoreDocs.length - pageSize - 1;
     if (start < 0) {
       start = 0;
