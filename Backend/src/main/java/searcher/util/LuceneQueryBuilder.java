@@ -113,8 +113,7 @@ public class LuceneQueryBuilder {
     if (queryMap.containsKey(LANGUAGE)) {
       String language = queryMap.get(LANGUAGE)[0].split(",")[0];
       booleanQueryBuilder
-        .add(getTermQuery(LANGUAGE, language), BooleanClause.Occur.MUST);
-
+        .add(getTermQuery(C.FieldNames.LANGUAGE, language), BooleanClause.Occur.MUST);
     }
     if (queryMap.containsKey(CLUSTER)) {
       long cluster = Long.parseLong(queryMap.get(CLUSTER)[0].split(",")[0]);
