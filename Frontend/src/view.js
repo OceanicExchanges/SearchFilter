@@ -11,7 +11,7 @@ export class View {
    * creates and SVG for a given container ID element and sets the width and
    * height.
    */
-  constructor (containerID, viewCoordinator, height) {
+  constructor (containerID, viewCoordinator, height, width) {
     if (containerID.charAt(0) !== '#') {
       containerID = '#' + containerID
     }
@@ -20,7 +20,7 @@ export class View {
     t.dispatch = viewCoordinator.dispatch
     t.viewCoordinator = viewCoordinator
     t.margin = 40
-    t.width = 600
+    t.width = width || 600
     t.height = height || 600
     t.initSVG(containerID)
     t.transition = 0
@@ -36,7 +36,6 @@ export class View {
       .append('svg')
       .attr('width', t.width + 2 * t.margin)
       .attr('height', t.height + 2 * t.margin)
-      .attr('viewBox', '0 0 ' + (t.width + 2 * t.margin) + ' ' + (t.height + 2 * t.margin))
     t.svg = t.svgFull
       .append('g')
       .attr('transform', 'translate(' + t.margin + ' ' + t.margin + ')')

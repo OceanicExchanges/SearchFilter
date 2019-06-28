@@ -7,15 +7,17 @@
     </div>
     <info-line v-bind="infoLineData" @tagEvent="tagEvent"/>
     <div class="grid">
-      <div class="grid50">
+      <div class="grid45">
         <div id="data-loader"></div>
         <div id="geo-map"></div>
         <div id="documentCount"></div>
         <div id="textLength"></div>
         <div id="language-count"></div>
+      </div>
+      <div class="grid10">
         <div id="cluster-count"></div>
       </div>
-      <div class="grid50">
+      <div class="grid45">
         <div id="text-loader"></div>
         <div v-if="items.length > 0">
           <list v-bind:items="items"
@@ -195,9 +197,14 @@ export default {
     display: flex;
   }
 
-  .grid50 {
+  .grid45 {
     position: relative;
-    flex-basis: 49%;
+    flex-basis: 45%;
+  }
+
+  .grid10 {
+    position: relative;
+    flex-basis: 10%;
   }
 
   #text-loader, #data-loader {

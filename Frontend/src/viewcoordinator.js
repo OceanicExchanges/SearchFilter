@@ -122,7 +122,7 @@ export class ViewCoordinator {
     t.textLength = new TextLength('textLength', this, 60)
     t.worldMap = new WorldMap('geo-map', this, 150)
     t.languageCount = new LanguageCount('language-count', this, 60)
-    t.clusterCount = new Cluster('cluster-count', this, 30)
+    t.clusterCount = new Cluster('cluster-count', this, 600, 80)
   }
 
   setupDispatch () {
@@ -197,7 +197,7 @@ export class ViewCoordinator {
     t.textLength.update(t.textLengthData())
     t.worldMap.update(t.locationDimension.top(Infinity))
     t.languageCount.update(t.languageGroup.reduceCount().top(Infinity))
-    t.clusterCount.update(t.clusterDimensionGroup.reduceCount().top(10))
+    t.clusterCount.update(t.clusterDimensionGroup.reduceCount().top(20))
     t.vue.updateSelected(t.locationDimension.top(Infinity).length)
     t.vue.filterEvent()
   }
