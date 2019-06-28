@@ -1,4 +1,4 @@
-# CorpusExplorer
+# SearchFilter
 
 ## Modules
 * Backend: The backend is implemented as a Tomcat web container. The
