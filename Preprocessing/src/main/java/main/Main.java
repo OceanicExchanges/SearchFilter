@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
   public static void main(String[] args)
@@ -36,17 +37,15 @@ public class Main {
     int cores = Runtime.getRuntime().availableProcessors();
     ExecutorService executorService = Executors.newFixedThreadPool(cores);
     String type = C.Process.type();
+    AtomicInteger counter = new AtomicInteger(0);
     for (File file : files) {
       switch (type) {
         case GZIP_JSON: {
-          ZippedJSONDocumentCreator documentCreator =
-            new ZippedJSONDocumentCreator(file);
-          executorService.execute(documentCreator);
           break;
         }
         case GZIP_CSV: {
           ZippedCSVDocumentCreator documentCreator =
-            new ZippedCSVDocumentCreator(file);
+            new ZippedCSVDocumentCreator(file, counter);
           executorService.execute(documentCreator);
           break;
         }

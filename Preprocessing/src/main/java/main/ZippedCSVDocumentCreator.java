@@ -6,14 +6,19 @@ import org.apache.commons.csv.CSVRecord;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 public class ZippedCSVDocumentCreator extends DocumentCreator {
 
+  protected static final Logger log =
+    Logger.getLogger(ZippedCSVDocumentCreator.class.getName());
 
-  ZippedCSVDocumentCreator(File file) throws IOException {
-    super(file);
+  ZippedCSVDocumentCreator(File file, AtomicInteger counter)
+    throws IOException {
+    super(file, counter);
   }
 
   @Override public void run() {
@@ -43,6 +48,8 @@ public class ZippedCSVDocumentCreator extends DocumentCreator {
     } catch (IOException exception) {
       // Nothing bad happens, if we are unable to close the file
     }
+    log.log(Level.INFO,
+      "Finished indexing " + counter.incrementAndGet() + "  files.");
     logger.log(Level.INFO, "Finished file: " + file.toString());
   }
 

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 public abstract class DocumentCreator implements Runnable {
@@ -31,10 +32,12 @@ public abstract class DocumentCreator implements Runnable {
   final StringField languageField;
   final LongPoint clusterField;
   File file;
+  AtomicInteger counter;
   Map<String, Location> locations;
 
-  DocumentCreator(File file) throws IOException {
+  DocumentCreator(File file, AtomicInteger counter) throws IOException {
     this.file = file;
+    this.counter = counter;
     this.locations = LocationSingleton.getInstance();
     locations = LocationSingleton.getInstance();
     // Setup the fields
