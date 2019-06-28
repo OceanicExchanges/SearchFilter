@@ -1,6 +1,6 @@
 package configuration;
 
-import de.uni_stuttgart.corpusexplorer.common.configuration.C;
+import de.uni_stuttgart.searchfilter.common.configuration.C;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

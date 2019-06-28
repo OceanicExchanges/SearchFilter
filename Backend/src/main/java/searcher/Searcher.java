@@ -1,6 +1,6 @@
 package searcher;
 
-import de.uni_stuttgart.corpusexplorer.common.configuration.C;
+import de.uni_stuttgart.searchfilter.common.configuration.C;
 import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.search.Query;
 import org.json.JSONObject;

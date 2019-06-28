@@ -3,7 +3,7 @@ package main;
 import access.IndexWriteSingleton;
 import access.Location;
 import access.LocationSingleton;
-import de.uni_stuttgart.corpusexplorer.common.configuration.C;
+import de.uni_stuttgart.searchfilter.common.configuration.C;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.json.JSONArray;

@@ -1,8 +1,8 @@
 package main;
 
 import access.IndexWriteSingleton;
-import de.uni_stuttgart.corpusexplorer.common.access.FilesAccess;
-import de.uni_stuttgart.corpusexplorer.common.configuration.C;
+import de.uni_stuttgart.searchfilter.common.access.FilesAccess;
+import de.uni_stuttgart.searchfilter.common.configuration.C;
 import org.apache.lucene.index.IndexWriter;
 
 import java.io.File;

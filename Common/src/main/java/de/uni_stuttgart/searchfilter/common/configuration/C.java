@@ -1,4 +1,4 @@
-package de.uni_stuttgart.corpusexplorer.common.configuration;
+package de.uni_stuttgart.searchfilter.common.configuration;
 
 import java.io.FileInputStream;
 import java.io.IOException;

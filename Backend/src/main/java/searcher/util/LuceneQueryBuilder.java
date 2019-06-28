@@ -1,6 +1,6 @@
 package searcher.util;
 
-import de.uni_stuttgart.corpusexplorer.common.configuration.C;
+import de.uni_stuttgart.searchfilter.common.configuration.C;
 import org.apache.lucene.document.DoublePoint;
 import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.LongPoint;

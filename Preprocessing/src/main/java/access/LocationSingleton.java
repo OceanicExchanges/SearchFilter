@@ -1,6 +1,6 @@
 package access;
 
-import de.uni_stuttgart.corpusexplorer.common.configuration.C;
+import de.uni_stuttgart.searchfilter.common.configuration.C;
 
 import java.io.IOException;
 import java.nio.file.Files;

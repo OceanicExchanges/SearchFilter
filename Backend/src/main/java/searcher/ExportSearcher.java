@@ -1,7 +1,7 @@
 package searcher;
 
 import access.IndexSearcherSingleton;
-import de.uni_stuttgart.corpusexplorer.common.configuration.C;
+import de.uni_stuttgart.searchfilter.common.configuration.C;
 import org.apache.lucene.document.Document;
 
 import org.apache.lucene.search.IndexSearcher;

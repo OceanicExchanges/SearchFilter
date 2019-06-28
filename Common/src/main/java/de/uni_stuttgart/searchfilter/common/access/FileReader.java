@@ -1,4 +1,4 @@
-package de.uni_stuttgart.corpusexplorer.common.access;
+package de.uni_stuttgart.searchfilter.common.access;
 
 import java.io.IOException;
 import java.nio.file.Files;

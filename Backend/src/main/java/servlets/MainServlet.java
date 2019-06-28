@@ -1,6 +1,6 @@
 package servlets;
 
-import de.uni_stuttgart.corpusexplorer.common.configuration.C;
+import de.uni_stuttgart.searchfilter.common.configuration.C;
 import searcher.Searcher;
 
 import javax.servlet.http.HttpServlet;

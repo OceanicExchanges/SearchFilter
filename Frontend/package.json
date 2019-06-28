@@ -1,7 +1,7 @@
 {
-  "name": "CorpusExplorer",
-  "version": "0.0.1",
-  "description": "Frontend of the CorpusExplorer",
+  "name": "SearchFilter",
+  "version": "1.0.0",
+  "description": "Frontend of the SearchFilter",
   "author": "Moritz Knabben <moritz.knabben@vis.uni-stuttgart.de>",
   "private": true,
   "scripts": {

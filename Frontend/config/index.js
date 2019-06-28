@@ -50,7 +50,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../../Backend/src/main/webapp/'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/CorpusExplorer/',
+    assetsPublicPath: '/SearchFilter/',
 
     /**
      * Source Maps
