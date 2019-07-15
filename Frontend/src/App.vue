@@ -195,6 +195,7 @@ export default {
 
   .grid {
     display: flex;
+    justify-content: space-between;
   }
 
   .grid45 {

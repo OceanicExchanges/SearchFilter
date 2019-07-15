@@ -23,10 +23,15 @@ export class LanguageCount extends View {
     t.dotMainClass = '.barLanguage'
     t.svg.append('g').attr('class', 'x axis')
     t.svg.append('g').attr('class', 'y axis')
-    t.addTitle('Number of Documents per Language')
+    t.addTitle('Languages')
   }
 
   update (data) {
+    data.forEach(function (d) {
+      if (d.key === '') {
+        d.key = 'n.a.'
+      }
+    })
     let t = this
     t.x.domain(data.map(function (d) {
       return d.key
@@ -62,7 +67,7 @@ export class LanguageCount extends View {
         return t.height - t.y(d.value + 1)
       })
       .on('click', function (d, i) {
-        if (d.key === '') { return }
+        if (d.key === 'n.a.') { return }
         if (d.key === t.viewCoordinator.searchState.language) {
           d3.select(this).attr('fill', t.color(i % t.colorList.length))
           d3.selectAll(t.dotMainClass).attr('fill',

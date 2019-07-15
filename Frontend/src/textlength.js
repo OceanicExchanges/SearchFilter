@@ -40,7 +40,7 @@ export class TextLength extends View {
     // Add axes
     t.svg.append('g').attr('class', 'x axis')
     t.svg.append('g').attr('class', 'y axis')
-    t.addTitle('Number of Documents for different Doument Lengths')
+    t.addTitle('Text Lengths')
   }
 
   update (data) {

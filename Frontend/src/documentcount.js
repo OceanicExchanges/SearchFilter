@@ -47,7 +47,7 @@ export class DocumentCount extends View {
       .attr('class', 'x axis')
     t.svg.append('g')
       .attr('class', 'y axis')
-    t.addTitle('Number of Documents per Year')
+    t.addTitle('Documents per Year')
   }
 
   update (data) {

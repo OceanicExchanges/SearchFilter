@@ -118,11 +118,11 @@ export class ViewCoordinator {
 
   createViews () {
     let t = this
-    t.documentCount = new DocumentCount('documentCount', this, 60)
-    t.textLength = new TextLength('textLength', this, 60)
-    t.worldMap = new WorldMap('geo-map', this, 150)
-    t.languageCount = new LanguageCount('language-count', this, 60)
-    t.clusterCount = new Cluster('cluster-count', this, 600, 80)
+    t.documentCount = new DocumentCount('documentCount', this, 80, 800)
+    t.textLength = new TextLength('textLength', this, 80, 800)
+    t.worldMap = new WorldMap('geo-map', this, 170, 800)
+    t.languageCount = new LanguageCount('language-count', this, 80, 800)
+    t.clusterCount = new Cluster('cluster-count', this, 700, 140)
   }
 
   setupDispatch () {
