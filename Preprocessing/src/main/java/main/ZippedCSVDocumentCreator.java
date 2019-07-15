@@ -62,6 +62,7 @@ public class ZippedCSVDocumentCreator extends DocumentCreator {
     addText(record.get(C.CSV.TEXT), text);
     addPublisher(record.get(C.CSV.PUBLISHER), text);
     addCluster(record.get(C.CSV.CLUSTER), visualization);
+    addLink(record.get(C.CSV.LINK), text);
     if (locations.containsKey(record.get(C.CSV.PLACE_OF_PUBLICATION))) {
       addCoordinates(getLatitude(record.get(C.CSV.PLACE_OF_PUBLICATION)),
         getLongitude(record.get(C.CSV.PLACE_OF_PUBLICATION)), visualization);
