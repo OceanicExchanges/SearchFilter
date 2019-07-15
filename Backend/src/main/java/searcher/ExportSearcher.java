@@ -34,7 +34,7 @@ public class ExportSearcher extends Searcher {
   public String search(Query query) {
     TopDocs docs;
     try {
-      docs = indexSearcher.search(query, Integer.MAX_VALUE);
+      docs = indexSearcher.search(query, C.Serve.numberDocuments());
     } catch (IOException exception) {
       return handleException(exception);
     }
