@@ -134,12 +134,12 @@ export class ViewCoordinator {
     t.dispatch.on('dateEnd', function (range) {
       t.searchState.setDateRange(range)
       t.dateDimension.filterRange(range)
-      t.updateVisualization()
+      t.updateVisualizationText()
     })
     t.dispatch.on('dateClear', function () {
       t.searchState.clearDateRange()
       t.dateDimension.filterAll()
-      t.updateVisualization()
+      t.updateVisualizationText()
     })
     t.dispatch.on('lengthStart', function () {
       t.searchState.clearLengthRange()
@@ -148,46 +148,46 @@ export class ViewCoordinator {
     t.dispatch.on('lengthEnd', function (range) {
       t.searchState.setLengthRange(range)
       t.lengthDimension.filterRange(range)
-      t.updateVisualization()
+      t.updateVisualizationText()
     })
     t.dispatch.on('lengthClear', function () {
       t.searchState.clearLengthRange()
       t.lengthDimension.filterAll()
-      t.updateVisualization()
+      t.updateVisualizationText()
     })
     t.dispatch.on('mapEnd', function (ranges) {
       t.latitudeDimension.filterRange(ranges.latitudeRange)
       t.longitudeDimension.filterRange(ranges.longitudeRange)
       t.searchState.setLatitudeRange(ranges.latitudeRange)
       t.searchState.setLongitudeRange(ranges.longitudeRange)
-      t.updateVisualization()
+      t.updateVisualizationText()
     })
     t.dispatch.on('mapStart', function () {
       t.longitudeDimension.filterAll()
       t.latitudeDimension.filterAll()
       t.searchState.clearLatitudeRange()
       t.searchState.clearLongitudeRange()
-      t.updateVisualization()
+      t.updateVisualizationText()
     })
     t.dispatch.on('languageSelection', function (language) {
       t.languageDimension.filterExact(language)
       t.searchState.selectLanguage(language)
-      t.updateVisualization()
+      t.updateVisualizationText()
     })
     t.dispatch.on('languageClear', function () {
       t.languageDimension.filterAll()
       t.searchState.clearLanguage()
-      t.updateVisualization()
+      t.updateVisualizationText()
     })
     t.dispatch.on('clusterSelection', function (cluster) {
       t.clusterDimension.filterExact(cluster)
       t.searchState.selectCluster(cluster)
-      t.updateVisualization()
+      t.updateVisualizationText()
     })
     t.dispatch.on('clusterClear', function () {
       t.clusterDimension.filterAll()
       t.searchState.clearCluster()
-      t.updateVisualization()
+      t.updateVisualizationText()
     })
   }
 
@@ -199,7 +199,11 @@ export class ViewCoordinator {
     t.languageCount.update(t.languageGroup.reduceCount().top(Infinity))
     t.clusterCount.update(t.clusterDimensionGroup.reduceCount().top(20))
     t.vue.updateSelected(t.locationDimension.top(Infinity).length)
-    t.vue.filterEvent()
+  }
+
+  updateVisualizationText () {
+    this.updateVisualization()
+    this.vue.filterEvent()
   }
 
   clear () {
