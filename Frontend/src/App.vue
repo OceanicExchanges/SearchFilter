@@ -22,7 +22,6 @@
         <div v-if="items.length > 0">
           <list v-bind:items="items"
                 v-bind:terms="terms"
-                @moreLikeThisEvent="moreLikeThisEvent"
                 @selectionEvent="selectionEvent"
                 @pageEvent="pageEvent"/>
         </div>
@@ -97,13 +96,6 @@ export default {
       this.searchState.setTerms(searchBarText)
       let queryString = this.searchState.parameter()
       download('export?' + queryString)
-    },
-    moreLikeThisEvent: function (id) {
-      this.displayLoader()
-      this.displayLoader('data')
-      query('like?id=' + id, this.updateDocumentData)
-      this.displayLoader('text')
-      query('textLike?page=1&id=' + id, this.updateTextData)
     },
     selectionEvent: function (selection) {
       this.searchState.selectionEvent(selection)

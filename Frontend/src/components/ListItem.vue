@@ -2,8 +2,6 @@
   <div>
     <img title="Clear all selections" v-on:click="clearMarks" width="16px"
          src="../assets/clear.svg"/>
-    <img title="Search for similar documents" v-on:click="moreLikeThis"
-         width="16px" src="../assets/similardocuments.svg"/>
     <img v-if="link" title="Open document source"
          v-on:click="sourceLink" width="16px"
          src="../assets/source.svg"/>
@@ -79,9 +77,6 @@ export default {
       t.textMark.clear('mark-include')
       t.textMark.clear('mark-exclude')
       t.$emit('selectionEvent', {type: 'clear', id: t.item.id})
-    },
-    moreLikeThis: function () {
-      this.$emit('moreLikeThisEvent', this.item.id)
     },
     sourceLink: function () {
       window.open(this.item.link)

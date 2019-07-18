@@ -16,14 +16,6 @@
         <servlet-class>servlets.FullTextServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DocumentLikenessServlet</servlet-name>
-        <servlet-class>servlets.DocumentMoreLikeThisServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>TextLikenessServlet</servlet-name>
-        <servlet-class>servlets.FullTextMoreLikeThisServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ExportServlet</servlet-name>
         <servlet-class>servlets.ExportServlet</servlet-class>
     </servlet>
@@ -34,14 +26,6 @@
     <servlet-mapping>
         <servlet-name>TextServlet</servlet-name>
         <url-pattern>/text</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DocumentLikenessServlet</servlet-name>
-        <url-pattern>/like</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>TextLikenessServlet</servlet-name>
-        <url-pattern>/textLike</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ExportServlet</servlet-name>
