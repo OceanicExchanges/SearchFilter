@@ -239,6 +239,22 @@ public abstract class DocumentCreator implements Runnable {
         case "French":
           languagesArray[i] = "fr";
           break;
+        case "Croatian":
+          languagesArray[i] = "hr";
+          break;
+        case "Russian":
+          languagesArray[i] = "ru";
+          break;
+        case "Latvian":
+          languagesArray[i] = "lv";
+          break;
+        case "Estonian":
+          languagesArray[i] = "et";
+          break;
+        case "Polish":
+        case "Poli sh":
+          languagesArray[i] = "pl";
+          break;
       }
     }
     return languagesArray;
