@@ -13,25 +13,26 @@ import java.util.zip.GZIPInputStream;
 
 public class ZippedCSVDocumentCreator extends DocumentCreator {
 
-  protected static final Logger log =
-    Logger.getLogger(ZippedCSVDocumentCreator.class.getName());
+  protected static final Logger log = Logger.getLogger(
+      ZippedCSVDocumentCreator.class.getName());
 
   ZippedCSVDocumentCreator(File file, AtomicInteger counter)
-    throws IOException {
+      throws IOException {
     super(file, counter);
   }
 
-  @Override public void run() {
+  @Override
+  public void run() {
     BufferedReader bufferedReader;
     Iterable<CSVRecord> records;
     try {
       FileInputStream fileInputStream = new FileInputStream(file);
       GZIPInputStream gzipInputStream = new GZIPInputStream(fileInputStream);
-      InputStreamReader inputStreamReader =
-        new InputStreamReader(gzipInputStream);
+      InputStreamReader inputStreamReader = new InputStreamReader(
+          gzipInputStream);
       bufferedReader = new BufferedReader(inputStreamReader);
-      records = CSVFormat.DEFAULT.withHeader().withSkipHeaderRecord()
-        .parse(bufferedReader);
+      records = CSVFormat.DEFAULT.withHeader().withSkipHeaderRecord().parse(
+          bufferedReader);
     } catch (IOException exception) {
       exception.printStackTrace();
       return;
@@ -49,7 +50,7 @@ public class ZippedCSVDocumentCreator extends DocumentCreator {
       // Nothing bad happens, if we are unable to close the file
     }
     log.log(Level.INFO,
-      "Finished indexing " + counter.incrementAndGet() + "  files.");
+        "Finished indexing " + counter.incrementAndGet() + "  files.");
     logger.log(Level.INFO, "Finished file: " + file.toString());
   }
 
@@ -65,7 +66,10 @@ public class ZippedCSVDocumentCreator extends DocumentCreator {
     addLink(record.get(C.CSV.LINK), text);
     if (locations.containsKey(record.get(C.CSV.PLACE_OF_PUBLICATION))) {
       addCoordinates(getLatitude(record.get(C.CSV.PLACE_OF_PUBLICATION)),
-        getLongitude(record.get(C.CSV.PLACE_OF_PUBLICATION)), visualization);
+          getLongitude(record.get(C.CSV.PLACE_OF_PUBLICATION)), visualization);
+    } else if (locations.containsKey(record.get(C.CSV.SOURCE))) {
+      addCoordinates(getLatitude(record.get(C.CSV.SOURCE)),
+          getLongitude(record.get(C.CSV.SOURCE)), visualization);
     }
     addLanguages(normalizeLanguages(record.get(C.CSV.LANGUAGE)), visualization);
     super.visualizationData.setStringValue(visualization.toString());

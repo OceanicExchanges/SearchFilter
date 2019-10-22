@@ -39,7 +39,6 @@ public abstract class DocumentCreator implements Runnable {
     this.file = file;
     this.counter = counter;
     this.locations = LocationSingleton.getInstance();
-    locations = LocationSingleton.getInstance();
     // Setup the fields
     idField = new LongPoint(C.FieldNames.ID, 0);
     visualizationData = new StoredField(C.FieldNames.VISUALIZATION, "");

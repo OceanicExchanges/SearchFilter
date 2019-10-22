@@ -143,6 +143,7 @@ public class C {
     public static final int OPEN_DOCUMENT = 23;
     public static final int LANGUAGE = 41;
     public static final int PLACE_OF_PUBLICATION = 42;
+    public static final int SOURCE = 26;
     public static final int LINK = 12;
     public static final int PUBLISHER = 28;
     public static final int CLUSTER = 2;

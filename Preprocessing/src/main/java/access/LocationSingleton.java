@@ -1,18 +1,19 @@
 package access;
 
 import de.uni_stuttgart.searchfilter.common.configuration.C;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Collections;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
- * This class represents a single instance of a map from original locations
- * as a string to {@link Location}
+ * This class represents a single instance of a map from original locations as a
+ * string to {@link Location}
  */
 public class LocationSingleton {
   private static Map<String, Location> locations = null;
@@ -22,14 +23,26 @@ public class LocationSingleton {
   public static Map<String, Location> getInstance() {
     if (locations == null) {
       locations = new HashMap<>();
-      try (Stream<String> stream = Files
-        .lines(Paths.get(C.FilePath.locationsFile()))) {
-        stream.forEach(
-          line -> locations.put(line.split(":")[0], new Location(line)));
+
+      Iterable<CSVRecord> records;
+      try {
+        FileInputStream fileInputStream = new FileInputStream(
+            C.FilePath.locationsFile());
+        InputStreamReader inputStreamReader = new InputStreamReader(
+            fileInputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        records = CSVFormat.DEFAULT.withHeader().withSkipHeaderRecord().parse(
+            bufferedReader);
       } catch (IOException exception) {
         exception.printStackTrace();
+        return null;
       }
-      locations = Collections.unmodifiableMap(locations);
+      for (CSVRecord record : records) {
+        if(Integer.parseInt(record.get(5)) != -1) {
+          locations.put(record.get(1),
+              new Location(Float.parseFloat(record.get(3)), Float.parseFloat(record.get(4))));
+        }
+      }
     }
     return locations;
   }
