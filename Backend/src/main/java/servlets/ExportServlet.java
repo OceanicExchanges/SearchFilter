@@ -12,7 +12,7 @@ public class ExportServlet extends MainServlet {
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws IOException {
-    response.setContentType(C.ContentTypes.JSON);
+    response.setContentType(C.ContentTypes.CSV);
     response.setCharacterEncoding(C.ContentEncoding.UTF8);
     respond(request, response, new ExportSearcher());
   }

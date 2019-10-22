@@ -22,7 +22,7 @@ public abstract class MainServlet extends HttpServlet {
   private void prepareResponse(HttpServletRequest request,
                                HttpServletResponse response)
     throws IOException {
-    response.setContentType(C.ContentTypes.CSV);
+    response.setContentType(C.ContentTypes.JSON);
     response.setCharacterEncoding(C.ContentEncoding.UTF8);
     writer = response.getWriter();
     queryParameterMap = request.getParameterMap();
