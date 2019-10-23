@@ -99,6 +99,17 @@ public abstract class DocumentCreator implements Runnable {
    * @param text          JSON that contains the text data
    */
   final void addDate(String date, JSONObject visualization, JSONObject text) {
+    String[] elements = date.split("-");
+    switch (elements.length) {
+      case 1:
+        date = elements[0] + "-01-01";
+        break;
+      case 2:
+        date = elements[0] + "-" + elements[1] + "-01";
+        break;
+      default:
+        break;
+    }
     dateField.setStringValue(date);
     visualization.put(C.JSONFieldNames.DATE, date);
     text.put(C.JSONFieldNames.DATE, date);
