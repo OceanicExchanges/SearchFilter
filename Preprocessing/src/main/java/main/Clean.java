@@ -16,7 +16,7 @@ class OCR {
    *             readable
    * @return cleaned text
    */
-  static String cleanText(String text) {
+  static String cleanTextOCR(String text) {
     for (int i = 0; i < DELETE_STRINGS.length; ++i) {
       text = StringUtils.replace(text, DELETE_STRINGS[i], SPACE);
     }
