@@ -3,9 +3,9 @@ package main;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * This class provides rule-based OCR error correction.
+ * This class provides cleaning and normalizations methods for OCR text.
  */
-class OCR {
+class Clean {
 
   private static final String[] DELETE_STRINGS =
     {"&nbsp;", "nbsp;", "&nbsp", "nbsp"};
@@ -21,5 +21,14 @@ class OCR {
       text = StringUtils.replace(text, DELETE_STRINGS[i], SPACE);
     }
     return text;
+  }
+
+  /**
+   * Replace line breaks from text.
+   * @param text
+   * @return text without linebreaks
+   */
+  static String cleanLineBreaks(String text) {
+    return text.replaceAll("\\r\\n|\\r|\\n", " ");
   }
 }
