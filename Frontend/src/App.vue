@@ -167,7 +167,7 @@ export default {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    border: 4px solid #4575b4;
+    border: 4px solid #666666;
   }
 
   li {
