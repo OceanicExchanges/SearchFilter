@@ -3,10 +3,11 @@ package main;
 import access.IndexWriteSingleton;
 import access.Location;
 import access.LocationSingleton;
+import com.github.pemistahl.lingua.api.LanguageDetector;
+import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
 import de.uni_stuttgart.searchfilter.common.configuration.C;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -16,8 +17,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 public abstract class DocumentCreator implements Runnable {
-  static final Logger logger =
-    Logger.getLogger(DocumentCreator.class.getName());
+  static final Logger logger = Logger.getLogger(
+      DocumentCreator.class.getName());
+  final static LanguageDetector languageDetector = LanguageDetectorBuilder
+      .fromAllBuiltInLanguages().build();
   final IndexWriter writer;
   final Document document;
   // Index fields
@@ -72,7 +75,7 @@ public abstract class DocumentCreator implements Runnable {
    * @param text           JSON that contains the text data
    */
   final void addIdentification(String identification, JSONObject visualization,
-                               JSONObject text) {
+      JSONObject text) {
     long id = Long.parseLong(identification);
     idField.setLongValue(id);
     visualization.put(C.JSONFieldNames.ID, id);
@@ -155,7 +158,7 @@ public abstract class DocumentCreator implements Runnable {
    * @param visualization JSON that contains the visualization data
    */
   final void addCoordinates(double latitude, double longitude,
-                            JSONObject visualization) {
+      JSONObject visualization) {
     visualization.put(C.JSONFieldNames.LATITUDE, latitude);
     visualization.put(C.JSONFieldNames.LONGITUDE, longitude);
     latitudeField.setDoubleValue(latitude);
@@ -165,19 +168,14 @@ public abstract class DocumentCreator implements Runnable {
   /**
    * Add languages
    *
-   * @param languages
+   * @param text
    * @param visualization JSON that contains the visualization data
    */
-  final void addLanguages(String[] languages, JSONObject visualization) {
-    visualization.put(C.JSONFieldNames.LANGUAGE, new JSONArray(languages));
-    if (languages.length == 1) {
-      languageField.setStringValue(languages[0]);
-    } else if (languages.length > 1) {
-      for (int i = 1; i < languages.length; ++i) {
-        document.add(
-          new StringField(C.FieldNames.LANGUAGE, languages[i], Field.Store.NO));
-      }
-    }
+  final void addLanguage(String text, JSONObject visualization) {
+    String language = languageDetector.detectLanguageOf(text).getIsoCode();
+    visualization.put(C.JSONFieldNames.LANGUAGE, language);
+    document.add(
+        new StringField(C.FieldNames.LANGUAGE, language, Field.Store.NO));
   }
 
   /**
@@ -196,6 +194,7 @@ public abstract class DocumentCreator implements Runnable {
    * Return the latitude of the given place of publication
    *
    * @param placeOfPublication
+   *
    * @return latitude
    */
   final double getLatitude(String placeOfPublication) {
@@ -209,6 +208,7 @@ public abstract class DocumentCreator implements Runnable {
    * Return the longitude of the given place of publication
    *
    * @param placeOfPublication
+   *
    * @return longitude
    */
   final double getLongitude(String placeOfPublication) {
@@ -237,6 +237,7 @@ public abstract class DocumentCreator implements Runnable {
    * Return an array of normalized language identifiers
    *
    * @param languages
+   *
    * @return
    */
   final String[] normalizeLanguages(String languages) {

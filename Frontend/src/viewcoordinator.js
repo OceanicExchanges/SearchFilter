@@ -82,7 +82,7 @@ export class ViewCoordinator {
     })
     t.languageDimension = t.cf.dimension(function (d) {
       return d.language
-    }, true)
+    })
     t.languageGroup = t.languageDimension.group()
     t.clusterDimension = t.cf.dimension(function (d) {
       return d.cluster
@@ -99,11 +99,9 @@ export class ViewCoordinator {
   textLengthData () {
     let t = this
     let bins = t.lengthDimensionGroup.top(Infinity)
-    for (let i in bins) {
-      let bin = bins[i]
-      bin.scaledKey = t.textLengthMin + bin.key / NUMBER_LENGTH_BINS *
-        t.textLengthRange
-    }
+    bins.forEach(function (d) {
+      d.scaledKey = t.textLengthMin + d.key / NUMBER_LENGTH_BINS * t.textLengthRange
+    })
     return bins
   }
 
