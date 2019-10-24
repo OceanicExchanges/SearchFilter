@@ -52,9 +52,9 @@ export default {
   methods: {
     updateBasicInformation: function (basicInformation) {
       let t = this
-      t.infoLineData.totalHits = basicInformation.totalHits
-      t.infoLineData.hitsServed = basicInformation.hitsServed
-      t.infoLineData.computationTime = basicInformation.computationTime
+      this.$set(t.infoLineData, 'totalHits', basicInformation.totalHits)
+      this.$set(t.infoLineData, 'hitsServed', basicInformation.hitsServed)
+      this.$set(t.infoLineData, 'computationTime', basicInformation.computationTime)
     },
     updateSelected: function (selected) {
       this.infoLineData.selected = selected
