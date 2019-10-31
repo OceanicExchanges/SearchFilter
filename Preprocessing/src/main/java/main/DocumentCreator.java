@@ -174,8 +174,7 @@ public abstract class DocumentCreator implements Runnable {
   final void addLanguage(String text, JSONObject visualization) {
     String language = languageDetector.detectLanguageOf(text).getIsoCode();
     visualization.put(C.JSONFieldNames.LANGUAGE, language);
-    document.add(
-        new StringField(C.FieldNames.LANGUAGE, language, Field.Store.NO));
+    languageField.setStringValue(language);
   }
 
   /**
