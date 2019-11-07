@@ -31,17 +31,16 @@ public class LocationSingleton {
         InputStreamReader inputStreamReader = new InputStreamReader(
             fileInputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        records = CSVFormat.DEFAULT.withHeader().withSkipHeaderRecord().parse(
+        records = CSVFormat.TDF.withHeader().withSkipHeaderRecord().parse(
             bufferedReader);
       } catch (IOException exception) {
         exception.printStackTrace();
         return null;
       }
       for (CSVRecord record : records) {
-        if(Integer.parseInt(record.get(5)) != -1) {
-          locations.put(record.get(1),
-              new Location(Float.parseFloat(record.get(3)), Float.parseFloat(record.get(4))));
-        }
+        locations.put(record.get(2),
+            new Location(Float.parseFloat(record.get(4)),
+                Float.parseFloat(record.get(5))));
       }
     }
     return locations;
