@@ -31,6 +31,10 @@ public class C {
     return Float.parseFloat(properties.getProperty(property));
   }
 
+  private static String[] getStringArray(String property, String delimiter) {
+    return property.split(delimiter);
+  }
+
   public static class Serve {
     private static String PAGE_SIZE = "serve.page.size";
 
@@ -133,6 +137,15 @@ public class C {
      */
     public static String type() {
       return C.getS(TYPE);
+    }
+
+    private static final String LANGUAGES = "process.languages";
+
+    /**
+     * @return array of iso codes of languages to be detected
+     */
+    public static String[] languages() {
+      return C.getStringArray(LANGUAGES, ",");
     }
   }
 

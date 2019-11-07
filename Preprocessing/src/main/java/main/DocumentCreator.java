@@ -16,24 +16,26 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
-public abstract class DocumentCreator implements Runnable {
+abstract class DocumentCreator implements Runnable {
+
   static final Logger logger = Logger.getLogger(
       DocumentCreator.class.getName());
-  final static LanguageDetector languageDetector = LanguageDetectorBuilder
-      .fromAllBuiltInLanguages().build();
+  private final static LanguageDetector languageDetector =
+      LanguageDetectorBuilder
+      .fromIsoCodes(C.Process.languages()[0], C.Process.languages()).build();
   final IndexWriter writer;
   final Document document;
-  // Index fields
-  final LongPoint idField;
   final StoredField visualizationData;
   final StoredField textData;
-  final IntPoint lengthField;
-  final StringField dateField;
-  final Field textField;
-  final DoublePoint longitudeField;
-  final DoublePoint latitudeField;
-  final StringField languageField;
-  final LongPoint clusterField;
+  // Index fields
+  private final LongPoint idField;
+  private final IntPoint lengthField;
+  private final StringField dateField;
+  private final Field textField;
+  private final DoublePoint longitudeField;
+  private final DoublePoint latitudeField;
+  private final StringField languageField;
+  private final LongPoint clusterField;
   File file;
   AtomicInteger counter;
   Map<String, Location> locations;
@@ -143,7 +145,7 @@ public abstract class DocumentCreator implements Runnable {
   /**
    * Add link
    *
-   * @param link
+   * @param link         URL of article at library
    * @param textDocument JSON that contains the text data
    */
   final void addLink(String link, JSONObject textDocument) {
