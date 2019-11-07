@@ -11,9 +11,8 @@ public class ExportServlet extends MainServlet {
   public ExportServlet() { super(); }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws IOException {
+      throws IOException {
     response.setContentType(C.ContentTypes.CSV);
-    response.setCharacterEncoding(C.ContentEncoding.UTF8);
     respond(request, response, new ExportSearcher());
   }
 }

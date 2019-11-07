@@ -1,5 +1,6 @@
 package servlets;
 
+import de.uni_stuttgart.searchfilter.common.configuration.C;
 import searcher.FullTextSearcher;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ public class FullTextServlet extends MainServlet {
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws IOException {
+    response.setContentType(C.ContentTypes.JSON);
     respond(request, response, new FullTextSearcher());
   }
 }

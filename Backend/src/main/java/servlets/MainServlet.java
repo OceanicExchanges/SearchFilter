@@ -22,7 +22,6 @@ public abstract class MainServlet extends HttpServlet {
   private void prepareResponse(HttpServletRequest request,
                                HttpServletResponse response)
     throws IOException {
-    response.setContentType(C.ContentTypes.JSON);
     response.setCharacterEncoding(C.ContentEncoding.UTF8);
     writer = response.getWriter();
     queryParameterMap = request.getParameterMap();
@@ -38,9 +37,9 @@ public abstract class MainServlet extends HttpServlet {
   }
 
   void respond(HttpServletRequest request, HttpServletResponse response,
-               Searcher analyzer) throws IOException {
+               Searcher searcher) throws IOException {
     prepareResponse(request, response);
-    String result = computeResponse(analyzer);
+    String result = computeResponse(searcher);
     finishResponse(response, result);
   }
 
