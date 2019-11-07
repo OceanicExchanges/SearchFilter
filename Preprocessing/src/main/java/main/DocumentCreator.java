@@ -233,42 +233,4 @@ abstract class DocumentCreator implements Runnable {
     latitudeField.setDoubleValue(0.0);
     languageField.setStringValue("");
   }
-
-  /**
-   * Return an array of normalized language identifiers
-   *
-   * @param languages
-   *
-   * @return
-   */
-  final String[] normalizeLanguages(String languages) {
-    String[] languagesArray = languages.split(",");
-    for (int i = 0; i < languagesArray.length; ++i) {
-      switch (languagesArray[i]) {
-        case "German":
-          languagesArray[i] = "de";
-          break;
-        case "French":
-          languagesArray[i] = "fr";
-          break;
-        case "Croatian":
-          languagesArray[i] = "hr";
-          break;
-        case "Russian":
-          languagesArray[i] = "ru";
-          break;
-        case "Latvian":
-          languagesArray[i] = "lv";
-          break;
-        case "Estonian":
-          languagesArray[i] = "et";
-          break;
-        case "Polish":
-        case "Poli sh":
-          languagesArray[i] = "pl";
-          break;
-      }
-    }
-    return languagesArray;
-  }
 }
