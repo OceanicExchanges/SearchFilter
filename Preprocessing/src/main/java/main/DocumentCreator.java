@@ -127,7 +127,6 @@ abstract class DocumentCreator implements Runnable {
    * @param textDocument JSON that contains the text data
    */
   final void addText(String text, JSONObject textDocument) {
-    text = Clean.cleanLineBreaks(Clean.cleanTextOCR(text));
     textField.setStringValue(text);
     textDocument.put(C.JSONFieldNames.TEXT, text);
   }
