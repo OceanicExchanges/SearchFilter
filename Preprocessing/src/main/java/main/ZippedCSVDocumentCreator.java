@@ -71,7 +71,7 @@ public class ZippedCSVDocumentCreator extends DocumentCreator {
       addCoordinates(getLatitude(record.get(C.CSV.SOURCE)),
           getLongitude(record.get(C.CSV.SOURCE)), visualization);
     }
-    addLanguage(record.get(C.CSV.TEXT), visualization);
+    addLanguage(record.get(C.CSV.LANGUAGE), visualization);
     super.visualizationData.setStringValue(visualization.toString());
     super.textData.setStringValue(text.toString());
     try {

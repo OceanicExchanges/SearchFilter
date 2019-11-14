@@ -3,8 +3,6 @@ package main;
 import access.IndexWriteSingleton;
 import access.Location;
 import access.LocationSingleton;
-import com.github.pemistahl.lingua.api.LanguageDetector;
-import com.github.pemistahl.lingua.api.LanguageDetectorBuilder;
 import de.uni_stuttgart.searchfilter.common.configuration.C;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
@@ -20,9 +18,6 @@ abstract class DocumentCreator implements Runnable {
 
   static final Logger logger = Logger.getLogger(
       DocumentCreator.class.getName());
-  private final static LanguageDetector languageDetector =
-      LanguageDetectorBuilder
-      .fromIsoCodes(C.Process.languages()[0], C.Process.languages()).build();
   final IndexWriter writer;
   final Document document;
   final StoredField visualizationData;
@@ -169,11 +164,10 @@ abstract class DocumentCreator implements Runnable {
   /**
    * Add languages
    *
-   * @param text
+   * @param language      ISO language code
    * @param visualization JSON that contains the visualization data
    */
-  final void addLanguage(String text, JSONObject visualization) {
-    String language = languageDetector.detectLanguageOf(text).getIsoCode();
+  final void addLanguage(String language, JSONObject visualization) {
     visualization.put(C.JSONFieldNames.LANGUAGE, language);
     languageField.setStringValue(language);
   }
