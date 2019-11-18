@@ -54,6 +54,15 @@ public class C {
       return C.getI(NUMBER_DOCUMENTS);
     }
 
+    private static String NUMBER_EXPORT = "serve.number.export";
+
+    /**
+     * @return the maximum number of documents that should be exported.
+     */
+    public static int numberExport() {
+      return C.getI(NUMBER_EXPORT);
+    }
+
     private static String MAX_EDIT_DISTANCE = "serve.maxEditDistance";
 
     /**

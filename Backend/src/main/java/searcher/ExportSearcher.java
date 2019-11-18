@@ -34,7 +34,7 @@ public class ExportSearcher extends Searcher {
   public String search(Query query) {
     TopDocs docs;
     try {
-      docs = indexSearcher.search(query, C.Serve.numberDocuments());
+      docs = indexSearcher.search(query, C.Serve.numberExport());
     } catch (IOException exception) {
       return handleException(exception);
     }
@@ -58,6 +58,5 @@ public class ExportSearcher extends Searcher {
       csvString.append(CSV_LINE_BREAK);
     }
     return csvString.toString();
-
   }
 }
