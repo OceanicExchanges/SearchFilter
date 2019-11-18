@@ -169,6 +169,7 @@ public class C {
     public static final int LINK = 12;
     public static final int PUBLISHER = 28;
     public static final int CLUSTER = 2;
+    public static final int CORPUS = 24;
   }
 
   public static class JSON {
@@ -228,6 +229,8 @@ public class C {
     public static final String PUBLISHER = "publisher";
     public static final String LANGUAGE = "language";
     public static final String CLUSTER = "cluster";
+    public static final String PLACE_OF_PUBLICATION = "placeOfPublication";
+    public static final String CORPUS = "corpus";
   }
 }
 

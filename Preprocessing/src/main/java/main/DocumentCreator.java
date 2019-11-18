@@ -154,7 +154,9 @@ abstract class DocumentCreator implements Runnable {
    * @param visualization JSON that contains the visualization data
    */
   final void addCoordinates(double latitude, double longitude,
-      JSONObject visualization) {
+      JSONObject visualization, JSONObject text) {
+    text.put(C.JSONFieldNames.LATITUDE, latitude);
+    text.put(C.JSONFieldNames.LONGITUDE, longitude);
     visualization.put(C.JSONFieldNames.LATITUDE, latitude);
     visualization.put(C.JSONFieldNames.LONGITUDE, longitude);
     latitudeField.setDoubleValue(latitude);
@@ -167,7 +169,8 @@ abstract class DocumentCreator implements Runnable {
    * @param language      ISO language code
    * @param visualization JSON that contains the visualization data
    */
-  final void addLanguage(String language, JSONObject visualization) {
+  final void addLanguage(String language, JSONObject visualization, JSONObject text) {
+    text.put(C.JSONFieldNames.LANGUAGE, language);
     visualization.put(C.JSONFieldNames.LANGUAGE, language);
     languageField.setStringValue(language);
   }
@@ -178,10 +181,26 @@ abstract class DocumentCreator implements Runnable {
    * @param clusterString
    * @param visualization JSON that contains the visualization data
    */
-  final void addCluster(String clusterString, JSONObject visualization) {
+  final void addCluster(String clusterString, JSONObject visualization, JSONObject text) {
     long cluster = Long.parseLong(clusterString);
+    text.put(C.JSONFieldNames.CLUSTER, cluster);
     visualization.put(C.JSONFieldNames.CLUSTER, cluster);
     clusterField.setLongValue(cluster);
+  }
+
+  /**
+   * Add the place of publication
+   *
+   * @param placeOfPublication
+   * @param text
+   */
+  final void addPlaceOfPublication(String placeOfPublication, JSONObject text) {
+    text.put(C.JSONFieldNames.PLACE_OF_PUBLICATION, placeOfPublication);
+  }
+
+  final void addCorpus(String corpus, JSONObject visualization, JSONObject text) {
+    text.put(C.JSONFieldNames.CORPUS, corpus);
+    visualization.put(C.JSONFieldNames.CORPUS, corpus);
   }
 
   /**

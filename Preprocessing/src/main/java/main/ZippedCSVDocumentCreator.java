@@ -13,7 +13,7 @@ import java.util.zip.GZIPInputStream;
 
 public class ZippedCSVDocumentCreator extends DocumentCreator {
 
-  protected static final Logger log = Logger.getLogger(
+  private static final Logger log = Logger.getLogger(
       ZippedCSVDocumentCreator.class.getName());
 
   ZippedCSVDocumentCreator(File file, AtomicInteger counter)
@@ -62,16 +62,20 @@ public class ZippedCSVDocumentCreator extends DocumentCreator {
     addDate(record.get(C.CSV.DATE), visualization, text);
     addText(record.get(C.CSV.TEXT), text);
     addPublisher(record.get(C.CSV.PUBLISHER), text);
-    addCluster(record.get(C.CSV.CLUSTER), visualization);
+    addCluster(record.get(C.CSV.CLUSTER), visualization, text);
     addLink(record.get(C.CSV.LINK), text);
+    addPlaceOfPublication(record.get(C.CSV.PLACE_OF_PUBLICATION), text);
     if (locations.containsKey(record.get(C.CSV.PLACE_OF_PUBLICATION))) {
       addCoordinates(getLatitude(record.get(C.CSV.PLACE_OF_PUBLICATION)),
-          getLongitude(record.get(C.CSV.PLACE_OF_PUBLICATION)), visualization);
+          getLongitude(record.get(C.CSV.PLACE_OF_PUBLICATION)), visualization, text);
     } else if (locations.containsKey(record.get(C.CSV.SOURCE))) {
       addCoordinates(getLatitude(record.get(C.CSV.SOURCE)),
-          getLongitude(record.get(C.CSV.SOURCE)), visualization);
+          getLongitude(record.get(C.CSV.SOURCE)), visualization, text);
+    } else {
+      addCoordinates(-1.0, -1.0, visualization, text);
     }
-    addLanguage(record.get(C.CSV.LANGUAGE), visualization);
+    addLanguage(record.get(C.CSV.LANGUAGE), visualization, text);
+    addCorpus(record.get(C.CSV.CORPUS), visualization, text);
     super.visualizationData.setStringValue(visualization.toString());
     super.textData.setStringValue(text.toString());
     try {

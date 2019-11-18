@@ -3,12 +3,12 @@ package searcher;
 import access.IndexSearcherSingleton;
 import de.uni_stuttgart.searchfilter.common.configuration.C;
 import org.apache.lucene.document.Document;
-
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.json.JSONObject;
+import searcher.util.CSVStringBuilder;
 
 import java.io.IOException;
 import java.util.Map;
@@ -22,14 +22,12 @@ public class ExportSearcher extends Searcher {
     indexSearcher = IndexSearcherSingleton.getInstance();
   }
 
-  @Override public String search(Map<String, String[]> queryMap) {
+  @Override
+  public String search(Map<String, String[]> queryMap) {
     Query query = query(queryMap);
     log.log(Level.INFO, "Query: " + query.toString());
     return search(query);
   }
-
-  private static final char CSV_SEPARATOR = '\t';
-  private static final char CSV_LINE_BREAK = '\n';
 
   public String search(Query query) {
     TopDocs docs;
@@ -38,7 +36,10 @@ public class ExportSearcher extends Searcher {
     } catch (IOException exception) {
       return handleException(exception);
     }
-    StringBuilder csvString = new StringBuilder();
+    CSVStringBuilder csvStringBuilder = new CSVStringBuilder();
+    csvStringBuilder.addRecord("text", "date", "publisher",
+        "placeOfPublication", "latitude", "longitude", "link", "language",
+        "corpus", "cluster");
     for (int i = 0; i < docs.scoreDocs.length; ++i) {
       ScoreDoc doc = docs.scoreDocs[i];
       Document document;
@@ -52,11 +53,19 @@ public class ExportSearcher extends Searcher {
       JSONObject textDataJSON = new JSONObject(textData);
       String text = textDataJSON.getString(C.JSONFieldNames.TEXT);
       String date = textDataJSON.getString(C.JSONFieldNames.DATE);
-      csvString.append(date);
-      csvString.append(CSV_SEPARATOR);
-      csvString.append(text);
-      csvString.append(CSV_LINE_BREAK);
+      String publisher = textDataJSON.getString(C.JSONFieldNames.PUBLISHER);
+      String placeOfPublication = textDataJSON.getString(
+          C.JSONFieldNames.PLACE_OF_PUBLICATION);
+      Double latitude = textDataJSON.getDouble(C.JSONFieldNames.LATITUDE);
+      Double longitude = textDataJSON.getDouble(C.JSONFieldNames.LONGITUDE);
+      String link = textDataJSON.getString(C.JSONFieldNames.LINK);
+      String language = textDataJSON.getString(C.JSONFieldNames.LANGUAGE);
+      String corpus = textDataJSON.getString(C.JSONFieldNames.CORPUS);
+      Long cluster = textDataJSON.getLong(C.JSONFieldNames.CLUSTER);
+      csvStringBuilder.addRecord(text, date, publisher, placeOfPublication,
+          latitude.toString(), longitude.toString(), link, language, corpus,
+          cluster.toString());
     }
-    return csvString.toString();
+    return csvStringBuilder.toString();
   }
 }
