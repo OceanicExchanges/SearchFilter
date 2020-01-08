@@ -9,7 +9,7 @@ export class LanguageCount extends View {
     t.x = d3.scaleBand().range([0, t.width]).padding(0.2)
     t.xAxis = d3.axisBottom().scale(t.x)
     t.y = d3.scaleLog().range([t.height, 0])
-    t.yAxis = d3.axisLeft().scale(t.y)
+    t.yAxis = d3.axisLeft().scale(t.y).ticks(3, '.3s')
     t.colorList = [
       '#d73027',
       '#4575b4',
@@ -36,9 +36,9 @@ export class LanguageCount extends View {
     t.x.domain(data.map(function (d) {
       return d.key
     }))
-    t.y.domain([1, d3.max(data, function (d) {
-      return d.value
-    })])
+    t.y.domain(d3.extent(data, function (d) {
+      return d.value + 1
+    }))
     let updateSelection = t.svg.selectAll(t.dotMainClass)
       .data(data, function (d) {
         return d.key
@@ -46,6 +46,10 @@ export class LanguageCount extends View {
     updateSelection.exit().remove()
     updateSelection.transition()
       .duration(t.transition)
+      .attr('fill', function (d, i) { return t.color(i % t.colorList.length) })
+      .attr('x', function (d) {
+        return t.x(d.key)
+      })
       .attr('y', function (d) {
         return t.y(d.value + 1)
       })
@@ -81,10 +85,10 @@ export class LanguageCount extends View {
       })
     t.svg.select('.x.axis').transition()
       .duration(t.transition)
-      .attr('transform', 'translate(0,' + t.height + ')')
+      .attr('transform', `translate(0,${t.height})`)
       .call(t.xAxis)
     t.svg.select('.y.axis').transition()
       .duration(t.transition)
-      .call(t.yAxis.ticks(5, '.3s'))
+      .call(t.yAxis)
   }
 }
