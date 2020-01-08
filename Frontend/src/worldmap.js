@@ -20,14 +20,16 @@ export class WorldMap extends View {
     }
 
     function brushEnd () {
-      let selection = d3.event.selection
-      if (selection) {
+      const selection = d3.event.selection
+      if (selection !== null) {
         let upperLeft = t.projection.invert(selection[0])
         let lowerRight = t.projection.invert(selection[1])
         t.dispatch.call('mapEnd', t, {
           longitudeRange: [upperLeft[0], lowerRight[0]],
           latitudeRange: [lowerRight[1], upperLeft[1]]
         })
+      } else {
+        t.dispatch.call('mapStart')
       }
     }
 
