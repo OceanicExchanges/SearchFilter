@@ -137,6 +137,16 @@ abstract class DocumentCreator implements Runnable {
   }
 
   /**
+   * Add title
+   *
+   * @param title title string
+   * @param textDocument JSON that contains the text data
+   */
+  final void addTitle(String title, JSONObject textDocument) {
+    textDocument.put(C.JSONFieldNames.TITLE, title);
+  }
+
+  /**
    * Add link
    *
    * @param link         URL of article at library

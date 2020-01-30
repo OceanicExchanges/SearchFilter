@@ -37,9 +37,10 @@ public class ExportSearcher extends Searcher {
       return handleException(exception);
     }
     CSVStringBuilder csvStringBuilder = new CSVStringBuilder();
+    // TODO Use C file for literals
     csvStringBuilder.addRecord("text", "date", "publisher",
         "placeOfPublication", "latitude", "longitude", "link", "language",
-        "corpus", "cluster");
+        "corpus", "cluster", "title");
     for (int i = 0; i < docs.scoreDocs.length; ++i) {
       ScoreDoc doc = docs.scoreDocs[i];
       Document document;
@@ -62,9 +63,10 @@ public class ExportSearcher extends Searcher {
       String language = textDataJSON.getString(C.JSONFieldNames.LANGUAGE);
       String corpus = textDataJSON.getString(C.JSONFieldNames.CORPUS);
       Long cluster = textDataJSON.getLong(C.JSONFieldNames.CLUSTER);
+      String title = textDataJSON.getString(C.JSONFieldNames.TITLE);
       csvStringBuilder.addRecord(text, date, publisher, placeOfPublication,
           latitude.toString(), longitude.toString(), link, language, corpus,
-          cluster.toString());
+          cluster.toString(), title);
     }
     return csvStringBuilder.toString();
   }

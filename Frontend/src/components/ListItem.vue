@@ -5,7 +5,7 @@
     <img v-if="link" title="Open document source"
          v-on:click="sourceLink" width="16px"
          src="../assets/source.svg"/>
-    {{ item.date }} {{ item.publisher }}
+    {{ item.date }} {{ item.title.length > 0 ? item.title.length : item.placeOfPublication }} {{ item.corpus }}
     <div ref="text"/>
   </div>
 </template>

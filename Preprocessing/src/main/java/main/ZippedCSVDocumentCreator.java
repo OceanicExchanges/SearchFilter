@@ -62,6 +62,7 @@ public class ZippedCSVDocumentCreator extends DocumentCreator {
     addDate(record.get(C.CSV.DATE), visualization, text);
     addText(record.get(C.CSV.TEXT), text);
     addPublisher(record.get(C.CSV.PUBLISHER), text);
+    addTitle(record.get(C.CSV.TITLE), text);
     addCluster(record.get(C.CSV.CLUSTER), visualization, text);
     addLink(record.get(C.CSV.LINK), text);
     addPlaceOfPublication(record.get(C.CSV.PLACE_OF_PUBLICATION), text);
