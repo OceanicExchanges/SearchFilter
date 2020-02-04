@@ -29,7 +29,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ExportServlet</servlet-name>
-        <url-pattern>/export</url-pattern>
+        <url-pattern>/export.csv</url-pattern>
     </servlet-mapping>
     <security-constraint>
         <web-resource-collection>

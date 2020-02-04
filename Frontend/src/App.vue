@@ -95,7 +95,7 @@ export default {
       let searchBarText = this.$refs.searchBar.getInput()
       this.searchState.setTerms(searchBarText)
       let queryString = this.searchState.parameter()
-      download('export?' + queryString)
+      download('export.csv?' + queryString)
     },
     selectionEvent: function (selection) {
       this.searchState.selectionEvent(selection)
