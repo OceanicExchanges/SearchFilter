@@ -56,7 +56,7 @@ export class ViewCoordinator {
       return d.date
     })
     let dateGroup = function (d) {
-      return new Date('' + d.getFullYear())
+      return new Date(`${d.getFullYear()}`)
     }
     t.dateCountGroup = t.dateDimension.group(dateGroup)
     // Length dimension

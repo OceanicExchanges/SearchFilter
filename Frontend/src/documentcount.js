@@ -56,7 +56,7 @@ export class DocumentCount extends View {
       return d.key
     }))
     t.y.domain(d3.extent(data, function (d) {
-      return d.value + 1.0
+      return d.value
     }))
     let updateSelection = t.svg.selectAll(t.dotMainClass)
       .data(data, t.keyFunction)
@@ -67,21 +67,21 @@ export class DocumentCount extends View {
         return t.y(d.value + 1.0)
       })
       .attr('height', function (d) {
-        return t.height - t.y(d.value + 1.0)
+        return t.height - t.y(d.value)
       })
     updateSelection.enter()
       .append(t.mainShape)
       .attr('class', t.mainClass)
-      .attr('fill', '#666666')
+      .attr('fill', t.defaultGray)
       .attr('x', function (d) {
         return t.x(d.key)
       })
       .attr('y', function (d) {
-        return t.y(d.value + 1.0)
+        return t.y(d.value)
       })
       .attr('width', t.width / data.length)
       .attr('height', function (d) {
-        return t.height - t.y(d.value + 1.0)
+        return t.height - t.y(d.value)
       })
     t.svg.select('.x.axis')
       .transition()
