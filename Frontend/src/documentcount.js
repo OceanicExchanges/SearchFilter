@@ -64,7 +64,7 @@ export class DocumentCount extends View {
     updateSelection.transition()
       .duration(t.transition)
       .attr('y', function (d) {
-        return t.y(d.value + 1.0)
+        return t.y(d.value)
       })
       .attr('height', function (d) {
         return t.height - t.y(d.value)
