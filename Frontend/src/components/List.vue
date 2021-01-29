@@ -65,22 +65,15 @@ export default {
 </script>
 <style scoped>
   ul {
-    overflow-y: scroll;
-    height: 750px;
+    list-style-type: none;
+    margin-left: 50px;
+    margin-right: 20px;
   }
 
-  a {
-    background-color: #eee;
-    text-decoration: none;
-    display: inline-block;
-    color: black;
+  li {
+    background: #dddddd;
+    margin-top: 10px;
   }
-
-  a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-
   .pagination {
     display: flex;
   }

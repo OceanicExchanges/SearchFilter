@@ -2,218 +2,87 @@
   <div class="app">
     <div class="header">
       <search-bar ref="searchBar" @searchBarEvent="searchBarEvent"/>
-      <search-button @filterSearchEvent="filterSearchEvent"/>
       <export-button @exportEvent="exportEvent"/>
     </div>
-    <info-line v-bind="infoLineData" @tagEvent="tagEvent"/>
-    <div class="grid">
-      <div class="grid45">
-        <div id="data-loader"></div>
-        <div id="geo-map"></div>
-        <div id="documentCount"></div>
-        <div id="textLength"></div>
-        <div id="language-count"></div>
-      </div>
-      <div class="grid10">
-        <div id="cluster-count"></div>
-      </div>
-      <div class="grid45">
-        <div id="text-loader"></div>
-        <div v-if="items.length > 0">
-          <list v-bind:items="items"
-                v-bind:terms="terms"
-                @selectionEvent="selectionEvent"
-                @pageEvent="pageEvent"/>
-        </div>
-      </div>
+    <div id="vis"></div>
+    <div id="text" v-if="texts.length > 0">
+      <list v-bind:items="texts"/>
     </div>
   </div>
 </template>
 
 <script>
 import SearchBar from './components/SearchBar.vue'
-import Button from './components/Button.vue'
 import ExportButton from './components/ExportButton.vue'
 import InfoLine from './components/InfoLine.vue'
 import List from './components/List.vue'
-import {query, download} from './query.js'
-import {ViewCoordinator} from './viewcoordinator.js'
-import {SearchState} from './searchstate.js'
+import {query} from './query.js'
+import {search} from './search.js'
+import {facets} from './facets.js'
 
 export default {
   name: 'App',
   components: {
     'search-bar': SearchBar,
-    'search-button': Button,
     'export-button': ExportButton,
     'info-line': InfoLine,
     'list': List
   },
   methods: {
-    updateBasicInformation: function (basicInformation) {
-      let t = this
-      this.$set(t.infoLineData, 'totalHits', basicInformation.totalHits)
-      this.$set(t.infoLineData, 'hitsServed', basicInformation.hitsServed)
-      this.$set(t.infoLineData, 'computationTime', basicInformation.computationTime)
-    },
-    updateSelected: function (selected) {
-      this.infoLineData.selected = selected
-    },
-    updateDocumentData: function (data) {
-      this.updateBasicInformation(data.basicInformation)
-      this.viewCoordinator.setDocumentData(data)
-      this.hideLoader('data')
-    },
-    updateTextData: function (data) {
-      this.items = data.documents
-      this.hideLoader('text')
-    },
-    sendQuery: function (queryString) {
-      this.displayLoader('data')
-      query('query?' + encodeURI(queryString), this.updateDocumentData)
-      this.displayLoader('text')
-      query('text?page=1&' + encodeURI(queryString), this.updateTextData)
-    },
     searchBarEvent: function (searchText) {
-      this.searchState.clear()
-      this.searchState.setTerms(searchText)
-      let queryString = this.searchState.parameter()
-      this.viewCoordinator.clear()
-      this.items = []
-      this.sendQuery(queryString)
-      this.terms = this.searchState.terms
-    },
-    filterSearchEvent: function () {
-      let searchBarText = this.$refs.searchBar.getInput()
-      this.searchState.setTerms(searchBarText)
-      let queryString = this.searchState.parameter()
-      this.viewCoordinator.clear()
-      this.items = []
-      this.sendQuery(queryString)
+      search.text(searchText)
+      query(`text?page=1&${search.query()}`, this.updateTexts)
+      query(`query?&${search.query()}`, this.updateFilter)
     },
     exportEvent: function () {
-      let searchBarText = this.$refs.searchBar.getInput()
-      this.searchState.setTerms(searchBarText)
-      let queryString = this.searchState.parameter()
-      download('export.csv?' + queryString)
     },
-    selectionEvent: function (selection) {
-      this.searchState.selectionEvent(selection)
+    updateTexts: function (texts) {
+      this.texts = texts.documents
     },
-    deselectionEvent: function (deselection) {
-      this.searchState.deselectionEvent(deselection)
+    updateFilter: function (data) {
+      this.filter.initialize(this.convert(data.documents))
+        .draw()
+        .update(this.filterEvent)
     },
-    selectionClearEvent: function (id) {
-      this.searchState.selectionClearEvent(id)
+    filterEvent: function (state) {
+      search.update(state)
     },
-    pageEvent: function (page) {
-      let queryString = this.searchState.lastQueryString
-      this.displayLoader('text')
-      query('text?page=' + page + '&' + encodeURI(queryString),
-        this.updateTextData)
-    },
-    tagEvent: function (id) {
-    },
-    filterEvent: function () {
-      let t = this
-      let searchBarText = t.$refs.searchBar.getInput()
-      t.searchState.setTerms(searchBarText)
-      let queryString = this.searchState.parameter()
-      this.displayLoader('text')
-      query('text?page=1&' + encodeURI(queryString), this.updateTextData)
-    },
-    displayLoader: function (type) {
-      let loader = document.getElementById(`${type}-loader`)
-      loader.style.display = 'initial'
-    },
-    hideLoader: function (type) {
-      let loader = document.getElementById(`${type}-loader`)
-      loader.style.display = 'none'
+    convert: function (data) {
+      const newData = []
+      const dimensions = ['corpus', 'date', 'language', 'textLength']
+      for (const element of data) {
+        newData.push({
+          cluster: new Set([element.cluster]),
+          corpus: new Set([element.corpus]),
+          date: new Set([new Date(element.date)]),
+          language: new Set([element.language]),
+          textLength: new Set([element.textLength])
+        })
+      }
+      newData['dimensions'] = dimensions
+      newData['types'] = {
+        'corpus': 'string',
+        'date': 'date',
+        'language': 'string',
+        'textLength': 'number'
+      }
+      newData['dimensions'].forEach(function (d, i) { newData['types'][i] = newData['types'][d] })
+      return newData
     }
   },
   mounted: function () {
-    this.searchState = new SearchState(this.infoLineData)
-    this.viewCoordinator = new ViewCoordinator(this, this.searchState)
+    const width = window.innerWidth - 100
+    this.filter = facets('#vis', width, 400, 20, '#aaaaaa')
+    search.clear()
   },
   data: function () {
     return {
-      items: [],
-      terms: [],
-      viewCoordinator: undefined,
-      infoLineData: {
-        tags: []
-      }
+      texts: [],
+      filter: undefined
     }
   }
 }
 </script>
 
 <style>
-  body {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    font-size: 20px;
-  }
-
-  .app {
-    box-sizing: border-box;
-  }
-
-  .header {
-    display: flex;
-  }
-
-  ul {
-    width: 100%;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    border: 4px solid #666666;
-  }
-
-  li {
-    border: 4px solid white;
-    margin-top: -4px; /* Prevent double borders */
-    background-color: white;
-    padding: 12px;
-    text-decoration: none;
-    font-size: 18px;
-    color: black;
-    display: block;
-  }
-
-  li:hover {
-    cursor: default;
-  }
-
-  .grid {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .grid45 {
-    position: relative;
-    flex-basis: 45%;
-  }
-
-  .grid10 {
-    position: relative;
-    flex-basis: 10%;
-  }
-
-  #text-loader, #data-loader {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    border: 16px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 16px solid #666666;
-    width: 60px;
-    height: 60px;
-    animation: spin 2s linear infinite;
-  }
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
 </style>

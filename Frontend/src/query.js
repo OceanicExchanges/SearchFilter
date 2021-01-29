@@ -1,6 +1,8 @@
 'use strict'
 
-import {_} from 'utiljs'
+const httpGetJSON = function (url, callback) {
+  fetch(url).then(response => response.json()).then(callback)
+}
 
 /**
  * General HTTP GET query function.
@@ -23,7 +25,7 @@ export function query (relativeUrl, callback) {
       url = 'http://localhost:8080/static/text.json'
     }
   }
-  _.httpGetJSON(url, callback)
+  httpGetJSON(url, callback)
 }
 
 export function download (relativeUrl) {
